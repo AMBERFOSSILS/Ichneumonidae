@@ -32,9 +32,4 @@ POINTS=8
 318.00000 389.00000
 IMAGE=astmet_gelina_o_gelchl.JPG
 ID=0
-LM=0
-IMAGE=fossil_gelina_g_gelina.jpg
-ID=1
-LM=0
-IMAGE=palalb_gelina_g_mesisc.JPG
-ID=2
+
