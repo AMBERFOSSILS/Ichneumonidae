@@ -3,7 +3,7 @@
 # in order to use the date that was created on tpsDig2, we need to download the
 # open-source package "geomorph" from the CRAN-repository.
 
- WASPDATA1 <- readland.tps("GELINAE.TPS", specID = "ID", readcurves = TRUE)
+ WASPDATA1 <- readland.tps("DATA_GELINAE.TPS", specID = "ID", readcurves = TRUE)
 
 # In order to get all Images as a list as they are ordered in the TPS File:
 # 1.Create a .txt file and copy all information from the tps file inside
@@ -58,7 +58,7 @@ plot(WASPDATA1)
 # although there is an outlier (Grasseiteles from Endaseina), which probably even doesnt belong to Gelinae or was
 # not correctly created
  
- legend(-0.62 , 0.2, unique(Tribe), col= 1:length(Tribe), pch=1)
+ legend(-0.62 , 0.2, unique(Tribe), col= 1:length(Tribe), pch=16)
  
 #END: 16.03.2021 02:24
 
