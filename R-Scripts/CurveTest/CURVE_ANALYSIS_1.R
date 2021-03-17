@@ -4,23 +4,12 @@
 # open-source package "geomorph" from the CRAN-repository.
 
  WASPDATA1 <- readland.tps("DATA_GELINAE.TPS", specID = "ID", readcurves = TRUE)
+species <- as.factor(substr(dimnames(WASPDATA1)[[3]],1,6))
 
-# In order to get all Images as a list as they are ordered in the TPS File:
-# 1.Create a .txt file and copy all information from the tps file inside
-# 2.read the file with read.table
- NewName <- read.table("Species.txt", sep= '\n')
-# 3.only get Lines containing our Name
- NewName<- NewName[grepl("ID=",NewName$V1)==TRUE,]
-# 4. get rid of backslashes
- NewName <-gsub("\\", "", NewName, fixed = TRUE)
-# 5. plot the Names
- NewName
-# 6. copy the path in front of our actual Data and delete it from the name
- NewName <- gsub("ID=C:UsersRobinDropboxMein PC (Gemeinsamer-PC)DocumentsGitHubIchneumonidaeR-Scripts", "", NewName, fixed = TRUE)
-# 7. write an excel file with all names in it.
- write.xlsx(NewName, file = "covariants_test.xlsx")
-# 8. copy the names into the template to create a covariant List.
- 
+#in order to create a list of our covariants we first need a list of all images that are used in the data
+library(xlsx)
+write.xlsx(as.factor(dimnames(WASPDATA1)[[3]]), file = "covariants_test.xlsx")
+#then we simply apply our excel template with the formulas on the document and it will calculate all features (modified! 17.03.2020 18.22)
 
 
 # After this, we import the data as a table and inspect wether it was imported correctly
@@ -52,7 +41,7 @@ plot(WASPDATA1)
  PCA <- gm.prcomp(Gelinae$coords)
 
 # Which can be visualised by its classifiers with:
- plot(PCA, col= Tribe, pch= 16)
+ plot(PCA$x[,1],PCA$x[,2], col= Tribe, pch= 16)
 
 # The figure shows clear differences from Gelini to Echthrini and Mesostenini (
 # although there is an outlier (Grasseiteles from Endaseina), which probably even doesnt belong to Gelinae or was
@@ -61,5 +50,4 @@ plot(WASPDATA1)
  legend(-0.62 , 0.2, unique(Tribe), col= 1:length(Tribe), pch=16)
  
 #END: 16.03.2021 02:24
-
 
