@@ -15,14 +15,15 @@ write.xlsx(as.factor(dimnames(WASPDATA1)[[3]]), file = "covariants_test.xlsx")
 # After this, we import the data as a table and inspect wether it was imported correctly
 
  library(readxl)
- covariants <- read_excel("Classifiers_CurveDataSet.xlsx", col_types = c("text","text", "text", "text"))
+ covariants <- read_excel("covariants_test.xlsx", col_types = c("text","text", "text", "text", "text"))
  View(covariants)
 
 # A list of factors have to be created for all classifiers that want to be analyzed
 
  Tribe <- as.factor(covariants$TRIBE)
- Subtribe <- as.factor(covariants$Subtribe)
- Aerolet <- as.factor(covariants$AREOLET)
+ Subtribe <- as.factor(covariants$SUBTRIBE)
+ Areolet <- as.factor(covariants$AREOLET)
+ Creator<- as.factor(covariants$CREATOR)
 
 #Then we create the model(progressive analysis) that will be used for further analysis which
 # creates a fitted overlay of our landmark coordinates
@@ -41,13 +42,13 @@ plot(WASPDATA1)
  PCA <- gm.prcomp(Gelinae$coords)
 
 # Which can be visualised by its classifiers with:
- plot(PCA$x[,1],PCA$x[,2], col= Tribe, pch= 16)
+ plot(PCA, col= Tribe, pch= 16)
 
 # The figure shows clear differences from Gelini to Echthrini and Mesostenini (
 # although there is an outlier (Grasseiteles from Endaseina), which probably even doesnt belong to Gelinae or was
 # not correctly created
  
- legend(-0.62 , 0.2, unique(Tribe), col= 1:length(Tribe), pch=16)
+ legend(-0.55 , 0.3, unique(c("Echthrini","Fossil", "Gelini", "Mesostenini")), col= 1:length(Tribe), pch=16)
  
 #END: 16.03.2021 02:24
 
