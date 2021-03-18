@@ -1,5 +1,5 @@
 ---
-title: "first_Analysis"
+title: "First_Analysis"
 author: "Robin von Allmen"
 date: "18 3 2021"
 output: html_document
@@ -8,9 +8,9 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
-library(rgl)
+require(rgl)
+knitr::knit_hooks$set(webgl = hook_webgl)
 library(geomorph)
-knit_hooks$set(rgl = hook_rgl)
 setwd("~/GitHub/Ichneumonidae/R-Scripts")
 ```
 
@@ -27,7 +27,6 @@ subfam = as.factor( substr( dimnames(landmark)[[3]], 8, 13))
 areolet = as.factor( substr( dimnames(landmark)[[3]], 15, 15))
 tribe = as.factor( substr( dimnames(landmark)[[3]], 17, 19))
 
-#TODO: change Imagenames, so that subfam works (problem: Genus + sp is species Name)
 
 ##      define Semilandmarks, first LM is the start, last one the end (those are both
 ##      fixed landmarks, in between are the semilandmarks):
@@ -44,13 +43,13 @@ proD<-gpagen(landmark, surfaces = NULL, curves= sliders,
 
 
 ```{r pressure}
-PCA <-plotTangentSpace(proD$coords, groups=subfam, legend=T)
+PCA <-plotTangentSpace(proD$coords, groups=tribe, legend=T)
 PCA$pc.summary
 dev.off()
 
 #one can look at different PCA combinations to find the best model for its purpose
-plot(PCA$pc.scores[,1],PCA$pc.scores[,2], col=subfam, asp=T, las=1,pch=16, cex=1.3)
-legend("topright", legend= levels(subfam), col=palette(), pch=rep(19,14) )
+plot(PCA$pc.scores[,1],PCA$pc.scores[,2], col=tribe, asp=T, las=1,pch=16, cex=1.3)
+legend("topright", legend= levels(tribe), col=palette(), pch=rep(19,14) )
 
 # use the text() function to get the names of individual points
 text(PCA$pc.scores[,1],PCA$pc.scores[,2],labels=species,cex=0.7,pos=4)
@@ -88,8 +87,9 @@ plotRefToTarget(ref,PCA$pc.shapes$PC2min)
 
 with the PCA scores u are also able to generate 3d plots which compare several Principal Components at once:
 
-```{r 3D, rgl = TRUE}
-plot3d(PCA$pc.scores[,c(1,2,3)], col = palette(), size = 10)
-text3d(PCA$pc.scores[,1:3],texts=species,pos=4,cex= 1)
-legend3d(0.1, 0.2, legend = c("Echthrini","Mesostenini", "Gelini", "Fossil"), col = c("red", "blue", "green", "yellow"), pch= 16)
+```{r 3D, webgl = TRUE}
+colors = c("red","cyan","magenta","yellow")[tribe]
+plot3d(PCA$pc.scores[,1:3], col = colors, size = 9)
+text3d(PCA$pc.scores[,1:3],texts=species,pos=4,cex= 0.8)
+legend3d("topright", legend = c("Echthrini","Fossil", "Gelini", "Mesostenini"), col = c("red","cyan","magenta","yellow") , pch= 16)
 ```

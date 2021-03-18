@@ -30,5 +30,5 @@ POINTS=8
 624.00000 332.00000
 637.00000 316.00000
 644.00000 294.00000
-IMAGE=fossil_gelina_g_gelina.JPG
+IMAGE=fossil_gelina_g_fossil.JPG
 ID=0 
