@@ -76,7 +76,7 @@ proD7<-gpagen(landmark2, surfaces = NULL,
 
 ## PCA Analysis
 
-```{r PCA, results=FALSE,echo=FALSE}
+```{r PCA, results=FALSE,echo=FALSE,fig.show= 'hide'}
 
 PCA1 <-plotTangentSpace(proD0$coords, groups=tribe, legend=T)
 PCA2 <-plotTangentSpace(proD1$coords, groups=tribe, legend=T)
