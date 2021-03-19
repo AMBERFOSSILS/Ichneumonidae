@@ -1,5 +1,5 @@
 ---
-title: "First_Analysis"
+title: "Gelinae_vs_Ichneumoninae_Analysis"
 author: "Robin von Allmen"
 date: "18 3 2021"
 output: html_document
@@ -18,10 +18,10 @@ setwd("~/GitHub/Ichneumonidae/R-Scripts")
 ## Preparing Data
 
 
-```{r cars}
+```{r cars, results=FALSE}
 setwd("~/GitHub/Ichneumonidae/R-Scripts")
-landmark = readland.tps("DATA_GELINAE.tps",specID = "ID", readcurves = T, warnmsg = TRUE)
-
+landmark = readland.tps("DATA_GEL_ICH.tps",specID = "ID", readcurves = T, warnmsg = TRUE)
+landmark2 = readland.tps("DATA_GEL_ICH.tps",specID = "ID", readcurves = F, warnmsg = TRUE)
 ##      define classifiers (subfam or tribes)
 species = as.factor( substr( dimnames(landmark)[[3]], 1, 6))
 subfam = as.factor( substr( dimnames(landmark)[[3]], 8, 13))
@@ -35,29 +35,35 @@ sliders = define.sliders(c(15,22:29,16))
 
 ##      procrustes fit - "superimposition" - rotates and scales the landmarks to their closest distance,
 ##      minimizing the shape and size difference:
-proD<-gpagen(landmark, surfaces = NULL, curves= sliders,
+proD<-gpagen(landmark, surfaces = NULL, curves = sliders,
              PrinAxes = FALSE, max.iter = NULL, ProcD = F, Proj = TRUE,
              print.progress = TRUE)
+
+proD2<-gpagen(landmark2, surfaces = NULL,
+             PrinAxes = FALSE, max.iter = NULL, ProcD = F, Proj = TRUE,
+             print.progress = TRUE)
+
 ```
 
 ## PCA Analysis
 
+When comparing the Procrustes fit on the model that compares Ichneumoninae and Gelinae with eachother, we are surprised by the fact, that the curve between LM 15-16 does not improve dinstiguishment of the two subfamilies. Hence we proceed in this case with the analyses only obtained from fixed Landmarks.
 
-```{r pressure}
-PCA <-plotTangentSpace(proD$coords, groups=tribe, legend=T)
-PCA$pc.summary
-dev.off()
+```{r plot1}
 
-#one can look at different PCA combinations to find the best model for its purpose
-plot(PCA$pc.scores[,1],PCA$pc.scores[,2], col=tribe, asp=T, las=1,pch=16, cex=1.3)
+PCA <-plotTangentSpace(proD$coords, groups=subfam, legend=T)
 legend("topright", legend= levels(tribe), col=palette(), pch=rep(19,14) )
+title(main = "Gelinae vs Ichneumoninae - With Curves")
 
-# use the text() function to get the names of individual points
-text(PCA$pc.scores[,1],PCA$pc.scores[,2],labels=species,cex=0.7,pos=4)
 
-dev.off()
 ```
-One can work on this plot to get a beautiful shape so that it loocks somewhat like this:
+
+```{r plot2}
+PCA1 <-plotTangentSpace(proD2$coords, groups=subfam, legend=T)
+legend("topright", legend= levels(tribe), col=palette(), pch=rep(19,14) )
+title(main = "Gelinae vs Ichneumoninae - Without Curves")
+
+```
 
 ```{r plot,echo=FALSE}
   ## the more beautiful version:
@@ -66,33 +72,36 @@ mat <- matrix(c(4,5,0,1,1,2,1,1,3), 3)
 layout(mat, widths=c(1,1,1), heights=c(1,1,1))# set the size of the rows and columns
 
 par(mar=c(4, 4, 1, 1)) # sets the margins
-plot(PCA$pc.scores[,1],PCA$pc.scores[,2], col=tribe, asp=T, las=1,pch=16, cex=1.5)
-legend("topright", legend= levels(tribe), col=palette(), pch=rep(19,14) )
+plot(PCA1$pc.scores[,1],PCA1$pc.scores[,2], col=subfam, asp=T, las=1,pch=16, cex=1.5)
+legend("topright", legend= levels(subfam), col=palette(), pch=rep(19,14) )
 
-segments(min(PCA$pc.scores[,1]), 0,  max(PCA$pc.scores[,1]),0, col="grey", lty="dashed")
-segments(0, min(PCA$pc.scores[,2]), 0,  max(PCA$pc.scores[,2]), col="grey", lty="dashed")
+segments(min(PCA1$pc.scores[,1]), 0,  max(PCA1$pc.scores[,1]),0, col="grey", lty="dashed")
+segments(0, min(PCA1$pc.scores[,2]), 0,  max(PCA1$pc.scores[,2]), col="grey", lty="dashed")
 # in order to name individuals: text(PCA$pc.scores[,1],PCA$pc.scores[,2], species)
 
-ref <- mshape(proD$coords)
+ref <- mshape(proD2$coords)
 #qw= c(1,4,2,6,5,7,3)
 par(mar = c(0,0,0,0)) # sets the margins
 
-plotRefToTarget(ref,PCA$pc.shapes$PC1min)
+plotRefToTarget(ref,PCA1$pc.shapes$PC1min)
 # Item 3
-plotRefToTarget(ref,PCA$pc.shapes$PC1max)
+plotRefToTarget(ref,PCA1$pc.shapes$PC1max)
 # Item 4
-plotRefToTarget(ref,PCA$pc.shapes$PC2max)
+plotRefToTarget(ref,PCA1$pc.shapes$PC2max)
 # Item 5
-plotRefToTarget(ref,PCA$pc.shapes$PC2min)
+plotRefToTarget(ref,PCA1$pc.shapes$PC2min)
 ```
+
+
+## 3D-Plot
 
 with the PCA scores u are also able to generate 3d plots which compare several Principal Components at once:
 
 ```{r 3D, webgl = TRUE}
-colors = c("red","cyan","magenta","yellow")[tribe]
-plot3d(PCA$pc.scores[,1:3], col = colors, size = 9)
-text3d(PCA$pc.scores[,1:3],texts=species,pos=4,cex= 0.6)
-legend3d("topright", legend = c("Echthrini","Fossil", "Gelini", "Mesostenini"), col = c("red","cyan","magenta","yellow") , pch= 16)
+colors = c("red","cyan")[subfam]
+plot3d(PCA1$pc.scores[,1:3], col = colors, size = 9)
+text3d(PCA1$pc.scores[,1:3],texts=species,pos=4,cex= 0.6)
+legend3d("topright", legend = c("Gelinae","Ichneumoninae"), col = c("red","cyan") , pch= 16)
 
 
 ```
