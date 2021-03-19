@@ -18,7 +18,7 @@ setwd("~/GitHub/Ichneumonidae/R-Scripts")
 ## Preparing Data
 
 
-```{r cars}
+```{r cars, include=FALSE}
 setwd("~/GitHub/Ichneumonidae/R-Scripts")
 landmark = readland.tps("DATA_GELINAE.tps",specID = "ID", readcurves = T, warnmsg = TRUE)
 
@@ -45,7 +45,7 @@ proD<-gpagen(landmark, surfaces = NULL, curves= sliders,
 
 ```{r pressure}
 PCA <-plotTangentSpace(proD$coords, groups=tribe, legend=T)
-PCA$pc.summary
+#PCA$pc.summary
 dev.off()
 
 #one can look at different PCA combinations to find the best model for its purpose
@@ -101,8 +101,8 @@ legend3d("topright", legend = c("Echthrini","Fossil", "Gelini", "Mesostenini"), 
 ```
 
 ## Cluster Analysis
-```{r Clusters}
-PCA$pc.summary
+```{r Clusters,}
+head(PCA$pc.summary)
 
 data = data.frame(species, tribe, PCA$pc.scores[,1:6])
 
