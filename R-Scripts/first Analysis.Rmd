@@ -12,14 +12,14 @@ require(rgl)
 options(rgl.useNULL = TRUE) # Suppress the separate window.
 knitr::knit_hooks$set(webgl = hook_webgl)
 library(geomorph)
-setwd("~/GitHub/Ichneumonidae/R-Scripts")
+#setwd("~/GitHub/Ichneumonidae/R-Scripts")
 ```
 
 ## Preparing Data
 
 
 ```{r cars, include=FALSE}
-setwd("~/GitHub/Ichneumonidae/R-Scripts")
+
 landmark = readland.tps("DATA_GELINAE.tps",specID = "ID", readcurves = T, warnmsg = TRUE)
 
 ##      define classifiers (subfam or tribes)
@@ -45,8 +45,7 @@ proD<-gpagen(landmark, surfaces = NULL, curves= sliders,
 
 ```{r pressure}
 PCA <-plotTangentSpace(proD$coords, groups=tribe, legend=T)
-#PCA$pc.summary
-dev.off()
+
 
 #one can look at different PCA combinations to find the best model for its purpose
 plot(PCA$pc.scores[,1],PCA$pc.scores[,2], col=tribe, asp=T, las=1,pch=16, cex=1.3)
@@ -55,8 +54,8 @@ legend("topright", legend= levels(tribe), col=palette(), pch=rep(19,14) )
 # use the text() function to get the names of individual points
 text(PCA$pc.scores[,1],PCA$pc.scores[,2],labels=species,cex=0.7,pos=4)
 
-dev.off()
 ```
+
 One can work on this plot to get a beautiful shape so that it loocks somewhat like this:
 
 ```{r plot,echo=FALSE}
@@ -102,7 +101,7 @@ legend3d("topright", legend = c("Echthrini","Fossil", "Gelini", "Mesostenini"), 
 
 ## Cluster Analysis
 ```{r Clusters,}
-head(PCA$pc.summary)
+
 
 data = data.frame(species, tribe, PCA$pc.scores[,1:6])
 
@@ -118,7 +117,7 @@ hc$labels = tribe
 hcd <- as.dendrogram(hc)
 ```
 ## Dendrogramm
-```{r Bäumli}
+```{r Bäumli, results=FALSE}
 require("dendextend") ## needs a dendrogram
 #plot(hcd)
 

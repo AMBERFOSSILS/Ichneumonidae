@@ -1,5 +1,5 @@
 ---
-title: "Gelinae_vs_Ichneumoninae_Analysis"
+title: "Curve_Analysis"
 author: "Robin von Allmen"
 date: "18 3 2021"
 output: html_document
@@ -12,14 +12,14 @@ require(rgl)
 options(rgl.useNULL = TRUE) # Suppress the separate window.
 knitr::knit_hooks$set(webgl = hook_webgl)
 library(geomorph)
-setwd("~/GitHub/Ichneumonidae/R-Scripts")
+#setwd("~/GitHub/Ichneumonidae/R-Scripts")
 ```
 
 ## Preparing Data
 
 
 ```{r cars, results=FALSE}
-setwd("~/GitHub/Ichneumonidae/R-Scripts")
+#setwd("~/GitHub/Ichneumonidae/R-Scripts")
 landmark = readland.tps("Curve_Testfile.tps",specID = "ID", readcurves = T, warnmsg = TRUE)
 landmark2 = readland.tps("Curve_Testfile.tps",specID = "ID", readcurves = F, warnmsg = TRUE)
 ##      define classifiers (subfam or tribes)
@@ -89,19 +89,22 @@ PCA7 <-plotTangentSpace(proD6$coords, groups=tribe, legend=T)
 ```{r PLOT WITHOUT CURVES}
 
 PCA0 <-plotTangentSpace(proD7$coords, groups=tribe, legend=T)
+title(main="Without Curve")
 ```
 
 
-```{r PLOT CURVES, fig.show='hold', out.width="50%"}
+```{r PLOT CURVES, fig.show="80%", fig.height= 10, fig.width= 10}
 
-par(mar = c(2,3, .1, .1))
-plot(PCA1$pc.scores[,1],PCA1$pc.scores[,2], col=tribe, asp=T, las=1,pch=16, cex=1.3)
+par(mfrow= c(4,2))
+plot(PCA1$pc.scores[,1],PCA1$pc.scores[,2], col=tribe, asp=T, las=1,pch=16, cex=1.3, main= "1M+CU")
 legend("topright", legend= levels(tribe), col=palette(), pch=rep(19,14) )
 
-plot(PCA2$pc.scores[,1],PCA2$pc.scores[,2], col=tribe, asp=T, las=1,pch=16, cex=1.3)
-plot(PCA3$pc.scores[,1],PCA3$pc.scores[,2], col=tribe, asp=T, las=1,pch=16, cex=1.3)
-plot(PCA4$pc.scores[,1],PCA4$pc.scores[,2], col=tribe, asp=T, las=1,pch=16, cex=1.3)
-plot(PCA5$pc.scores[,1],PCA5$pc.scores[,2], col=tribe, asp=T, las=1,pch=16, cex=1.3)
-plot(PCA6$pc.scores[,1],PCA6$pc.scores[,2], col=tribe, asp=T, las=1,pch=16, cex=1.3)
+plot(PCA2$pc.scores[,1],PCA2$pc.scores[,2], col=tribe, asp=T, las=1,pch=16, cex=1.3, main= "2m-cu")
+
+plot(PCA3$pc.scores[,1],PCA3$pc.scores[,2], col=tribe, asp=T, las=1,pch=16, cex=1.3, main = "RS")
+plot(PCA4$pc.scores[,1],PCA4$pc.scores[,2], col=tribe, asp=T, las=1,pch=16, cex=1.3, main = "1M+Cu & 2m-cu")
+plot(PCA5$pc.scores[,1],PCA5$pc.scores[,2], col=tribe, asp=T, las=1,pch=16, cex=1.3, main= "1M+Cu & RS")
+plot(PCA6$pc.scores[,1],PCA6$pc.scores[,2], col=tribe, asp=T, las=1,pch=16, cex=1.3, main= "2m-Cu & RS")
+plot(PCA7$pc.scores[,1],PCA7$pc.scores[,2], col=tribe, asp=T, las=1,pch=16, cex=1.3, main= "1M+Cu & 2m-cu & RS")
 
 ```
