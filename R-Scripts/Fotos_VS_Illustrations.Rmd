@@ -1,0 +1,155 @@
+---
+title: "Foto_Analyses"
+author: "Robin von Allmen"
+date: "18 3 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+require(rgl)
+options(rgl.useNULL = TRUE) # Suppress the separate window.
+knitr::knit_hooks$set(webgl = hook_webgl)
+library(geomorph)
+#setwd("~/GitHub/Ichneumonidae/R-Scripts")
+```
+
+## Preparing Data
+
+
+```{r cars, results=FALSE}
+#setwd("~/GitHub/Ichneumonidae/R-Scripts")
+landmark = readland.tps("FOTO_ICHNEU.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
+landmark2 = readland.tps("FOTO_ICHNEU.tps",specID = "ID", readcurves = F, warnmsg = TRUE)
+##      define classifiers (subfam or tribes)
+species = as.factor( substr( dimnames(landmark)[[3]], 1, 6))
+subfam = as.factor( substr( dimnames(landmark)[[3]], 8, 13))
+areolet = as.factor( substr( dimnames(landmark)[[3]], 15, 15))
+tribe = as.factor( substr( dimnames(landmark)[[3]], 17, 19))
+foto = as.factor( substr( dimnames(landmark)[[3]], 24,24))
+
+##      define Semilandmarks, first LM is the start, last one the end (those are both
+##      fixed landmarks, in between are the semilandmarks):
+sliders = define.sliders(c(15,22:29,16))
+
+##      procrustes fit - "superimposition" - rotates and scales the landmarks to their closest distance,
+##      minimizing the shape and size difference:
+proD<-gpagen(landmark, surfaces = NULL, curves = sliders,
+             PrinAxes = FALSE, max.iter = NULL, ProcD = F, Proj = TRUE,
+             print.progress = TRUE)
+
+proD2<-gpagen(landmark2, surfaces = NULL,
+             PrinAxes = FALSE, max.iter = NULL, ProcD = F, Proj = TRUE,
+             print.progress = TRUE)
+
+```
+
+## PCA Analysis
+
+Looking at the model on the left we see that there is little variation between the specimen whose source were either fotos or illustrations. However there are some pretty strong outliers in the second plot without the curve, mainly due to PC1. Which looking at the procrustes fit overall belongs to LM #1 which makes sense, since it was oftenly difficult to identify this point on the graph. For further analysis I therefore recommend to ignore that. 
+
+```{r plot1, echo= FALSE, out.width="50%"}
+par(mfrow= c(1,2))
+PCA <-plotTangentSpace(proD$coords, groups=foto, legend=T)
+legend("topright", legend= levels(foto), col=palette(), pch=rep(19,14) )
+title(main = "Foto vs Illustrations - With curves")
+
+PCA1 <-plotTangentSpace(proD2$coords, groups=foto, legend=T)
+legend("topright", legend= levels(foto), col=palette(), pch=rep(19,14) )
+title(main = "Foto vs Illustrations - Without Curves")
+```
+
+In this plot we took the data with the curves and also did plot the Data from PC2 vs PC3 as we would expect to obtain more consistent data. 
+
+```{r plot,echo=FALSE}
+  ## the more beautiful version:
+
+mat <- matrix(c(4,5,0,1,1,2,1,1,3), 3)
+layout(mat, widths=c(1,1,1), heights=c(1,1,1))# set the size of the rows and columns
+
+par(mar=c(4, 4, 1, 1)) # sets the margins
+plot(PCA$pc.scores[,2],PCA$pc.scores[,3], col=foto, asp=T, las=1,pch=16, cex=1.5)
+legend("topright", legend= levels(foto), col=palette(), pch=rep(19,14) )
+
+segments(min(PCA$pc.scores[,2]), 0,  max(PCA$pc.scores[,2]),0, col="grey", lty="dashed")
+segments(0, min(PCA$pc.scores[,3]), 0,  max(PCA$pc.scores[,3]), col="grey", lty="dashed")
+# in order to name individuals: text(PCA$pc.scores[,1],PCA$pc.scores[,2], species)
+
+ref <- mshape(proD$coords)
+#qw= c(1,4,2,6,5,7,3)
+par(mar = c(0,0,0,0)) # sets the margins
+
+plotRefToTarget(ref,PCA$pc.shapes$PC1min)
+# Item 3
+plotRefToTarget(ref,PCA$pc.shapes$PC1max)
+# Item 4
+plotRefToTarget(ref,PCA$pc.shapes$PC2max)
+# Item 5
+plotRefToTarget(ref,PCA$pc.shapes$PC2min)
+```
+
+
+## 3D-Plot
+
+with the PCA scores u are also able to generate 3d plots which compare several Principal Components at once: Here we also se, that the PC1 has an extreme impact on the variation. 
+
+```{r 3D, webgl = TRUE}
+colors = c("red","cyan")[subfam]
+plot3d(PCA1$pc.scores[,1:3], col = colors, size = 9)
+text3d(PCA1$pc.scores[,1:3],texts=species,pos=4,cex= 0.6)
+legend3d("topright", legend = c("Gelinae","Ichneumoninae"), col = c("red","cyan") , pch= 16)
+
+
+```
+
+#Complete DataSet with mixed Fotos and Illustrations
+
+In order to tell wether our new Data-Collection is efficient to predict specimen orders that are made from photos, we determined how big the influence of these are on the overall analysis.(these two plots contain no curve data and plot PC2 vs PC3)
+
+```{r fotovsill, echo=FALSE,fig.show= 'hide',results=FALSE}
+#setwd("~/GitHub/Ichneumonidae/R-Scripts")
+landmark3 = readland.tps("DATA_GEL_ICH.TPS",specID = "ID", readcurves = F, warnmsg = TRUE)
+landmark4 = readland.tps("DATA_ALT_FOTO.tps",specID = "ID", readcurves = F, warnmsg = TRUE)
+##      define classifiers (subfam or tribes)
+species1 = as.factor( substr( dimnames(landmark3)[[3]], 1, 6))
+subfam1 = as.factor( substr( dimnames(landmark3)[[3]], 8, 13))
+tribe1 = as.factor( substr( dimnames(landmark3)[[3]], 17, 19))
+foto1 = as.factor( substr( dimnames(landmark3)[[3]], 24,24))
+
+species2 = as.factor( substr( dimnames(landmark4)[[3]], 1, 6))
+tribe2 = as.factor( substr( dimnames(landmark4)[[3]], 17, 19))
+foto2 = as.factor( substr( dimnames(landmark4)[[3]], 24,24))
+subfam2 = as.factor( substr( dimnames(landmark4)[[3]], 8, 13))
+levels(subfam2) <- c(levels(subfam2), "f")
+subfam2[112:125] <- "f"
+
+
+
+##      procrustes fit - "superimposition" - rotates and scales the landmarks to their closest distance,
+##      minimizing the shape and size difference:
+proD<-gpagen(landmark3, surfaces = NULL, 
+             PrinAxes = FALSE, max.iter = NULL, ProcD = F, Proj = TRUE,
+             print.progress = TRUE)
+
+proD2<-gpagen(landmark4, surfaces = NULL, 
+             PrinAxes = FALSE, max.iter = NULL, ProcD = F, Proj = TRUE,
+             print.progress = TRUE)
+
+PCA <-plotTangentSpace(proD$coords, groups=subfam1, legend=T)
+PCA1 <-plotTangentSpace(proD2$coords, groups=subfam2, legend=T)
+
+```
+
+```{r wholedata}
+par(mfrow=c(1,2)) # sets the margins
+
+plot(PCA$pc.scores[,2],PCA$pc.scores[,3], col=subfam1, asp=T, las=1,pch=16, cex=1.5)
+legend("topright", legend= levels(subfam1), col=palette(), pch=rep(19,14) )
+plot(PCA1$pc.scores[,2],PCA1$pc.scores[,3], col=subfam2, asp=T, las=1,pch=16, cex=1.5)
+legend("topright", legend= levels(subfam2), col=palette(), pch=rep(19,14) )
+
+```
+
+
+However comparing the graphs from the Data Set with and without Fotos there is clearly a tendance of the specimen from the fotos to mingle in between the other subfamily which clearly is unwantend. But still  a big amoung of green dots which actually belong to Ichneumoninae still are close to the pink colour. So the important thing now is to identify the landmarks which have the most impact on this variation and to sort out fotos from specimen where these points are not clearly indicated.
