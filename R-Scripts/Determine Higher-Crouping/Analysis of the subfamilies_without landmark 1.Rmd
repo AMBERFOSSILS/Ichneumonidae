@@ -31,16 +31,16 @@ tribe = as.factor( substr( dimnames(landmark)[[3]], 17, 19))
 
 ##      define Semilandmarks, first LM is the start, last one the end (those are both
 ##      fixed landmarks, in between are the semilandmarks):
-sliders = define.sliders(c(15,22:29,16))
+sliders_red = define.sliders(c(14,21:28,15))
 
 ##      procrustes fit - "superimposition" - rotates and scales the landmarks to their closest distance,
 ##      minimizing the shape and size difference:
-proD<-gpagen(landmark, surfaces = NULL, curves= sliders,
+proD<-gpagen(landmark[2:29,,], surfaces = NULL, curves= sliders_red,
              PrinAxes = FALSE, max.iter = NULL, ProcD = F, Proj = TRUE,
              print.progress = TRUE)
 use= c("pimpli", "banchi", "gelina", "ophion", "ichneu")
 reduced<- proD$coords[,,subfam%in% use]
-pro_red<-gpagen(reduced, surfaces = NULL, curves= sliders,
+pro_red<-gpagen(reduced, surfaces = NULL, curves= sliders_red,
              PrinAxes = FALSE, max.iter = NULL, ProcD = F, Proj = TRUE,
              print.progress = TRUE)
 subfam1<-as.factor(substr(dimnames(pro_red$coords)[[3]],8,13))
