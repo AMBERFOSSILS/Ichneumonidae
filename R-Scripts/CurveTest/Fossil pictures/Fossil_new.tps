@@ -1,0 +1,10 @@
+LM=0
+IMAGE=fossil_gelina_g_fossil.JPG
+LM=0
+IMAGE=fossil_gelina_g_fossil_2.jpg
+LM=0
+IMAGE=fossil_gelina_g_fossil_3.jpg
+LM=0
+IMAGE=fossil_gelina_g_fossil_4.jpg
+LM=0
+IMAGE=fossil_gelina_g_fossil_5.JPG
