@@ -109,8 +109,8 @@ legend3d("topright", legend = c("Echthrini","Fossil", "Gelini", "Mesostenini"), 
 ## Cluster Analysis
 ```{r Clusters,}
 
-
-data = data.frame(species, tribe, PCA$pc.scores[,1:6])
+#Data of Alex does not include tribe
+data = data.frame(species, subfam1, PCA$pc.scores[,1:6])
 
 # Compute distances and hierarchical clustering
 dd <- dist(scale(data[c(3:8)]), method = "euclidean")
@@ -118,7 +118,7 @@ dd <- dist(scale(data[c(3:8)]), method = "euclidean")
 ## Ward's minimum variance method
 hc <- hclust(dd, method = "ward.D2")
 
-hc$labels = tribe
+hc$labels = subfam1
 
 # Convert hclust into a dendrogram and plot
 hcd <- as.dendrogram(hc)
@@ -129,7 +129,7 @@ require("dendextend") ## needs a dendrogram
 #plot(hcd)
 
 # Create a vector of colors, darkgreen if am is 0, green if 1.
-my_colors <- ifelse(hc$labels=="ech", "cyan",ifelse(hc$labels=="gel","green", ifelse(hc$labels=="mes", "red","yellow")))
+my_colors <- ifelse(hc$labels=="banchi", "cyan",ifelse(hc$labels=="gelina","green", ifelse(hc$labels=="ichneu", "red",ifelse(hc$labels=="ophion", "darkblue","yellow"))))
 #my_colors <- ifelse(hc$labels=="scolob", "forestgreen",ifelse(hc$labels=="metopi", "green","yellow"))
 
 par(mar=c(10,1,1,1))
@@ -145,7 +145,7 @@ hcd %>%
 
 # Add the colored bar
 colored_bars(colors = my_colors, dend = hcd, rowLabels = "tribe")
-legend("topright", legend=levels(tribe), col= c("cyan", "yellow", "green", "red"), pch=15)
+legend("topright", legend=levels(subfam1), col= c("cyan", "green", "red", "darkblue", "yellow"), pch=15)
 
 ```
 
