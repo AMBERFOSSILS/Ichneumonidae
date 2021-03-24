@@ -24,7 +24,7 @@ pro_red<-gpagen(reduced, surfaces = NULL, curves= sliders,
                 PrinAxes = FALSE, max.iter = NULL, ProcD = F, Proj = TRUE,
                 print.progress = TRUE)
 subfam1<-as.factor(substr(dimnames(pro_red$coords)[[3]],8,13))
-```
+
 #CVA
 cva<- CVA(pro_red$coords, groups = subfam1, plot= T)
 
@@ -33,4 +33,8 @@ plot(cva$CVscores, col=subfam1, pch=as.numeric(subfam1), typ="n",asp=1,
      xlab=paste("1st canonical axis", paste(round(cva$Var[1,2],1),"%")),
      ylab=paste("2nd canonical axis", paste(round(cva$Var[2,2],1),"%")))
 text(cva$CVscores, as.character(subfam1), col=as.numeric(subfam1), cex=.7)
+
+
+
+
 
