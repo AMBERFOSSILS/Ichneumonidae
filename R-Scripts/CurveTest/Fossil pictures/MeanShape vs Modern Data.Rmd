@@ -105,19 +105,53 @@ plotRefToTarget(ref,PCA2$pc.shapes$PC2min)
 
 ## Clustering in new Taxonomy and Dendrogramm
 
+```{r Procrustes Distances, message = FALSE, results='hide', include=FALSE}
+library(Evomorph)
+
+inlist = list(proD$coords [,,])
+for ( j in 1: dim(proD$coords )[3] )
+  inlist[[j]] = proD$coords [,,j]
+
+
+ID = paste (subfam,species, sep = "_", collapse = NULL, recycle0 = FALSE)
+
+### PC1 for PC1dist thingy.. for empty matrix: ###################
+PCA_sc<-PCA2$pc.scores
+
+row.names(PCA_sc) = ID
+PCdist = as.matrix( dist(PCA_sc))
+
+###  make empty matrix 
+Proc_dist= matrix( NA, dim(PCA_sc)[1], dim(PCA_sc)[1] )
+
+colnames(Proc_dist) = ID
+rownames(Proc_dist) = ID
+
+###  make a loop : calculate proc distances for each row. 
+Proc_dist
+for ( i in 1:length(ID)){
+  Proc_dist[i,] = ShapeDist(inlist, inlist[[i]])
+}
+
+write.table(Proc_dist,"Proc_distances_ban_pim_oph_cte.txt", sep=" ",row.names = TRUE, col.names = TRUE)
+
+###################################################################
+Proc_dist = read.table("Proc_distances_ban_pim_oph_cte.txt", header=T)
+
+```
 
 
 ```{r Dendrogramm, results='hide', message = FALSE}
 #summary(PCA2)
-data = data.frame(species, subfam, PCA2$pc.scores[,1:17])
+#data = data.frame(species, subfam, PCA2$pc.scores[,1:17])
 
 # Compute distances and hierarchical clustering
-dd <- dist(scale(data[c(3:19)]), method = "euclidean")
+dd <- dist(scale(Proc_dist))
 
 ## Ward's minimum variance method
-hc <- hclust(dd, method = "ward.D2")
+hc <- hclust(dd, method = "complete")
 
-hc$labels = data$subfam
+hc$labels = subfam
 
 # Convert hclust into a dendrogram and plot
 hcd <- as.dendrogram(hc)
@@ -141,9 +175,9 @@ hcd %>%
   plot(axes=FALSE)
 
 # Add the colored bar
+
 colored_bars(colors = my_colors, dend = hcd, rowLabels = "subfam")
 legend("topright", legend=levels(subfam), col= c("yellow", "cyan", "red", "green", "darkblue"), pch=15)
-title(main= "Dendrogram including 95% of cumulative variation")
-
+title(main= "Dendrogram with Procrustes Distances between all specimen")
 
 ```
