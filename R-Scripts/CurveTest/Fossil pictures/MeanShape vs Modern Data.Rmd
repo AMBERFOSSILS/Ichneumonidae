@@ -1,0 +1,148 @@
+---
+title: "Fossil Mean vs modern Taxonomy"
+author: "Robin von Allmen"
+date: "18 3 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/GitHub/Ichneumonidae/R-Scripts/CurveTest/Fossil pictures")
+library(knitr)
+require(rgl)
+require(DescTools)
+options(rgl.useNULL = TRUE) # Suppress the separate window.
+knitr::knit_hooks$set(webgl = hook_webgl)
+library(geomorph)
+
+```
+
+## Preparing Data
+
+First we read in the Data of our 10 samples of our Fossil to create a procrustes fit, from which we then create the "Mean Shape" of our specimen to rule out the effects of perspective on the picture from the CT-Scan. 
+
+```{r cars, results=FALSE}
+landmark = readland.tps("FOSSIL_R.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
+
+
+##      define Semilandmarks, first LM is the start, last one the end (those are both
+##      fixed landmarks, in between are the semilandmarks):
+sliders = define.sliders(c(15,22:29,16))
+
+##      procrustes fit - "superimposition" - rotates and scales the landmarks to their closest distance,
+##      minimizing the shape and size difference:
+proD<-gpagen(landmark, surfaces = NULL, curves = sliders,
+             PrinAxes = FALSE, max.iter = NULL, ProcD = T, Proj = TRUE,
+             print.progress = TRUE)
+
+```
+
+## PCA Analysis
+
+We can look at the PCA for a second, however eventhough these are Data of the very same data, the variation may be huge, since the variation will be scaled depending on how equal they are. So if we would put all the other Data in this plot as well these points would relatively be closer together. 
+
+```{r plot1, webgl=TRUE}
+PCA1 <-plotTangentSpace(proD$coords)
+dev.off()
+plot3d(PCA1$pc.scores[,1:3], col = "cyan", size = 9)
+text3d(PCA1$pc.scores[,1:3],texts=1:10,pos=8,cex= 0.8)
+
+```
+Now we create our Mean shape for our specimen and load the other data which we append our fossil later.
+```{r create Meanshape, fig.show='hide', results='hide'}
+#consesus Data from the proD contains the mean points for the procrustes fit of the fossil versions.
+meanfossil <- array(proD$consensus,dim= c(29,2,1))
+#change the name of the 3rd row so that we can later label our fossil specifically.
+dimnames(meanfossil)[[3]] <- "fossil_meansp_g.JPG"
+
+landmark = readland.tps("DATA_MODERN_TAX.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
+landmark <- Abind(landmark,meanfossil)
+species = as.factor( substr( dimnames(landmark)[[3]], 1, 6))
+subfam = as.factor( substr( dimnames(landmark)[[3]], 8, 13))
+areolet = as.factor( substr( dimnames(landmark)[[3]], 15, 15))
+
+
+##      define Semilandmarks, first LM is the start, last one the end (those are both
+##      fixed landmarks, in between are the semilandmarks):
+sliders = define.sliders(c(15,22:29,16))
+
+##      procrustes fit - "superimposition" - rotates and scales the landmarks to their closest distance,
+##      minimizing the shape and size difference:
+proD<-gpagen(landmark, surfaces = NULL, curves = sliders,
+             PrinAxes = FALSE, max.iter = NULL, ProcD = T, Proj = TRUE,
+             print.progress = TRUE)
+
+PCA2 <-plotTangentSpace(proD$coords, groups=subfam, legend=T)
+```
+
+```{r plot,echo=FALSE}
+  ## the more beautiful version:
+
+mat <- matrix(c(4,5,0,1,1,2,1,1,3), 3)
+layout(mat, widths=c(1,1,1), heights=c(1,1,1))# set the size of the rows and columns
+
+par(mar=c(4, 4, 1, 1)) # sets the margins
+plot(PCA2$pc.scores[,1],PCA2$pc.scores[,2], col=subfam, asp=T, las=1,pch=16, cex=1.5)
+legend("topright", legend= levels(subfam), col=palette(), pch=rep(19,14) )
+
+segments(min(PCA2$pc.scores[,1]), 0,  max(PCA2$pc.scores[,1]),0, col="grey", lty="dashed")
+segments(0, min(PCA2$pc.scores[,2]), 0,  max(PCA2$pc.scores[,2]), col="grey", lty="dashed")
+# in order to name individuals: text(PCA$pc.scores[,1],PCA$pc.scores[,2], species)
+
+ref <- mshape(proD$coords)
+#qw= c(1,4,2,6,5,7,3)
+par(mar = c(0,0,0,0)) # sets the margins
+
+plotRefToTarget(ref,PCA2$pc.shapes$PC1min)
+# Item 3
+plotRefToTarget(ref,PCA2$pc.shapes$PC1max)
+# Item 4
+plotRefToTarget(ref,PCA2$pc.shapes$PC2max)
+# Item 5
+plotRefToTarget(ref,PCA2$pc.shapes$PC2min)
+```
+
+
+## Clustering in new Taxonomy and Dendrogramm
+
+
+
+```{r Dendrogramm, results='hide'}
+
+data = data.frame(species, subfam, PCA2$pc.scores[,1:6])
+
+# Compute distances and hierarchical clustering
+dd <- dist(scale(data[c(3:8)]), method = "euclidean")
+
+## Ward's minimum variance method
+hc <- hclust(dd, method = "ward.D2")
+
+hc$labels = data$subfam
+
+# Convert hclust into a dendrogram and plot
+hcd <- as.dendrogram(hc)
+
+require("dendextend") ## needs a dendrogram
+#plot(hcd)
+
+# Create a vector of colors, darkgreen if am is 0, green if 1.
+my_colors <- ifelse(hc$labels=="crypti", "cyan",ifelse(hc$labels=="ateleu","yellow", ifelse(hc$labels=="fossil", "green","red")))
+
+
+par(mar=c(10,1,1,1))
+hcd %>%
+  set("labels_col", value = c("skyblue", "darkorange", "grey","darkorange4","deepskyblue4",
+                              "darkolivegreen3","darkorchid1","firebrick","gold1","aquamarine2","brown2","darkseagreen3","black"), k=13) %>%
+  set("branches_k_color", value = c("skyblue", "darkorange", "grey","darkorange4","deepskyblue4",
+                                    "darkolivegreen3","darkorchid1","firebrick","gold1","aquamarine2","brown2","darkseagreen3","black"),k = 13) %>%
+  set("labels_cex", 0.8)  %>%
+  set("leaves_pch", 19)  %>% 
+  set("nodes_cex", 0.4) %>% 
+  plot(axes=FALSE)
+
+# Add the colored bar
+colored_bars(colors = my_colors, dend = hcd, rowLabels = "subfam")
+legend("topright", legend=levels(subfam), col= c("yellow", "cyan", "green", "red"), pch=15)
+
+
+```
