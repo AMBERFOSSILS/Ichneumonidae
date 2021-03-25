@@ -190,4 +190,4 @@ legend("topright", legend=levels(subfam1), col= c("cyan", "green", "red", "darkb
 
 ```
 
-For the creation of the Dendrogramm only the first 17 PC scores were considered, which contribute to about 95.3% of variation. The fossil clusters with the Gelinae with one Ichneumininae adjoining. The fossil seems to belong to the subfamily Gelinae. The subfamilies cluster in groups with some outliers that are present in other subfamilies. 
+For the creation of the Dendrogramm only the first 17 PC scores were considered, which contribute to about 95.3% of variation. The fossil clusters within the subfamily Gelinae with one Ichneumininae adjoining. The fossil seems to belong to the subfamily Gelinae. The subfamilies cluster in groups with some outliers that are present in other subfamilies. 
