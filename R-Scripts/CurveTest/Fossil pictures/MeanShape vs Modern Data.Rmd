@@ -149,7 +149,7 @@ Proc_dist = read.table("Proc_distances_ban_pim_oph_cte.txt", header=T)
 dd <- dist(scale(Proc_dist))
 
 ## Ward's minimum variance method
-hc <- hclust(dd, method = "complete")
+hc <- hclust(dd, method = "average")
 
 hc$labels = subfam
 

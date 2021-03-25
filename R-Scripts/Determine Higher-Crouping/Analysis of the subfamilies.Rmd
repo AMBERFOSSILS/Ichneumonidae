@@ -17,8 +17,15 @@ setwd("~/GitHub/Ichneumonidae/R-Scripts/Determine Higher-Crouping")
 
 ## Preparing Data
 
+Path to Data: "~/GitHub/Ichneumonidae/R-Scripts/Determine Higher-Crouping"
 
-```{r cars, include=FALSE}
+Data contains 234 specimens from Ophioniformes/Ichneumoniformes/Pimpliformes. However, we will only select certain subfamilies (Banchinae/Ophioninae/Pimplinae/Ichneumoninae/Phygadeuontinae (here still marked as Gelinae from Townes 1969)).
+
+!!! This is the first time these subfamilies have been compared with geometric morphometrics by forewing venation!!!
+
+After Data-Aquisation we superimpose the Data with the function gpagen().
+
+```{r cars, include=FALSE, results= 'hide'}
 
 landmark = readland.tps("blockcourse_highersub.tps",specID = "ID", readcurves = T, warnmsg = TRUE)
 
@@ -49,7 +56,7 @@ tribe1<-as.factor(substr(dimnames(pro_red$coords)[[3]],17,19))
 ```
 
 ## PCA Analysis
-
+A PCA was done with the subfamilies Pimplinae, Gelinae, Ophioninae, Ichenumoninae and Banichnae.The ophioninae are seperated from the rest of the subfamilies quite strongly.The pimplinae are also partially seperated. They partly overlap with Gelinae and Ichneumoninae. The Gelinae overlap mostly with Banchinae and partially with Pimplinae. Overall the subfamilies cluster mostly in groups. However, there are some outliers clustering within another group.   
 
 ```{r PCA, fig.show='hide',results='hide'}
 
@@ -58,7 +65,6 @@ PCA <-plotTangentSpace(pro_red$coords, groups=subfam1, legend=T)
 
 ```
 
-One can work on this plot to get a beautiful shape so that it loocks somewhat like this:
 
 ```{r plot,echo=FALSE}
   ## the more beautiful version:
@@ -87,12 +93,8 @@ plotRefToTarget(ref,PCA$pc.shapes$PC2max)
 plotRefToTarget(ref,PCA$pc.shapes$PC2min)
 ```
 
-
-On the plot above we see, that Gelinae (Townes) are fairly good distinguishable from the other Tribes. The Data however does not represent modern taxonomy: Although most specimen still belong together in the same subfamily or Tribe, there has been a lot of improvement of building phenetic relationships between these genera together with molecular Data, hence some of the outliers in this plot that seem to belong in other groups, may actually be accounted to other taxanomic groups, as shown for the Genus Hemigaster for example. 
-
-
-
 ## CVA
+A CVA was done with the subfamilies Pimplinae, Gelinae, Ophioninae, Ichenumoninae and Banichnae.The Ophioninae seperate very strong from the rest of the subfamilies. The Gelinae are overlapping with the Ichneumininae. The Pimplinae and Banchinae are overlapping as well. The Pimplinae have a small overlap with the Ichneumoninae.Overall the subfamilies cluster mostly in groups. However, there are two outliers that cluster in another group.
 
 ```{r CVA}
 #CVA
@@ -108,13 +110,12 @@ require(car)
 for(ii in 1:length(levels(subfam1))){
     dataEllipse(cva$CVscores[subfam1==levels(subfam1)[ii],1],
     cva$CVscores[subfam1==levels(subfam1)[ii],2], 
-                    add=TRUE,levels=.80, col=c("red", "cyan", "yellow", "purple", "green")[ii])}
+                    add=TRUE,levels=.95, col=c("red", "cyan", "yellow", "purple", "green")[ii])}
 
 text(cva$CVscores[200,1], cva$CVscores[200,2], as.character(species1[200]), col="black", cex=1, pos=4)
 text(cva$CVscores[49,1], cva$CVscores[49,2], as.character(species1[49]), col="black", cex=1, pos=4)
 
 ```
-## Clustering in new Taxonomy and Dendrogramm
 
 ```{r Procrustes Distances, message = FALSE, results='hide', include=FALSE}
 library(Evomorph)
@@ -151,42 +152,39 @@ Proc_dist = read.table("Proc_distances_ban_pim_oph_cte.txt", header=T)
 ## Cluster Analysis
 ```{r Clusters,}
 
-data = data.frame(species1, subfam1, PCA$pc.scores[,1:17])
+data = data.frame(species1, subfam1, PCA$pc.scores[,1:25])
 
 # Compute distances and hierarchical clustering
-dd <- dist(scale(data[c(3:19)]), method = "euclidean")
+
+de <- dist(scale(data[c(3:27)]), method = "euclidean")
 
 ## Ward's minimum variance method
-hc <- hclust(dd, method = "ward.D2")
 
-hc$labels = subfam1
+hd <- hclust(de, method = "ward.D2")
 
+hd$labels = paste (subfam1,species1, sep = "_", collapse = NULL, recycle0 = FALSE)
 # Convert hclust into a dendrogram and plot
-hcd <- as.dendrogram(hc)
+
+hce <- as.dendrogram (hd)
 ```
 ## Dendrogramm
 ```{r Bäumli, results=FALSE, message=FALSE}
 require("dendextend") ## needs a dendrogram
-#plot(hcd)
-#summary(PCA)
 
-# Create a vector of colors, darkgreen if am is 0, green if 1.
-my_colors <- ifelse(hc$labels=="banchi", "cyan",ifelse(hc$labels=="gelina","green", ifelse(hc$labels=="ichneu", "red",ifelse(hc$labels=="ophion", "darkblue","yellow"))))
-#my_colors <- ifelse(hc$labels=="scolob", "forestgreen",ifelse(hc$labels=="metopi", "green","yellow"))
 
-par(mar=c(10,1,1,1))
-hcd %>%
+my_colors1 <- ifelse(substr(hd$labels,1,6)=="banchi", "cyan",ifelse(substr(hd$labels,1,6)=="gelina","green", ifelse(substr(hd$labels,1,6)=="ichneu", "red",ifelse(substr(hd$labels,1,6)=="ophion", "darkblue",ifelse(substr(hd$labels,8,13)== "fossil", "magenta", "yellow" )))))
+hce %>%
   set("labels_col", value = c("skyblue", "darkorange", "grey","darkorange4","deepskyblue4",
                               "darkolivegreen3","darkorchid1","firebrick","gold1","aquamarine2","brown2","darkseagreen3","black"), k=13) %>%
   set("branches_k_color", value = c("skyblue", "darkorange", "grey","darkorange4","deepskyblue4",
                                     "darkolivegreen3","darkorchid1","firebrick","gold1","aquamarine2","brown2","darkseagreen3","black"),k = 13) %>%
-  set("labels_cex", 0.8)  %>%
+  set("labels_cex", 0.7)  %>%
   set("leaves_pch", 19)  %>% 
   set("nodes_cex", 0.4) %>% 
   plot(axes=FALSE)
 
 # Add the colored bar
-colored_bars(colors = my_colors, dend = hcd, rowLabels = "subfam1")
+colored_bars(colors = my_colors1, dend = hce, rowLabels = "subfam1")
 legend("topright", legend=levels(subfam1), col= c("cyan", "green", "red", "darkblue", "yellow"), pch=15)
 
 ```

@@ -44,22 +44,17 @@ pro_red<-gpagen(reduced, surfaces = NULL, curves= sliders_red,
              PrinAxes = FALSE, max.iter = NULL, ProcD = F, Proj = TRUE,
              print.progress = TRUE)
 subfam1<-as.factor(substr(dimnames(pro_red$coords)[[3]],8,13))
+species1<-as.factor(substr(dimnames(pro_red$coords)[[3]],1,6))
+tribe1<-as.factor(substr(dimnames(pro_red$coords)[[3]],17,19))
 ```
 
 ## PCA Analysis
+Here, A PCA  with the subfamilies Pimplinae, Gelinae, Ophioninae, Ichenumoninae and Banichnae without landmark 1 was done. 
 
-
-```{r pressure}
+```{r pressure, fig.show='hide', results='hide'}
 
 PCA <-plotTangentSpace(pro_red$coords, groups=subfam1, legend=T)
 
-
-#one can look at different PCA combinations to find the best model for its purpose
-plot(PCA$pc.scores[,1],PCA$pc.scores[,2], col=tribe, asp=T, las=1,pch=16, cex=1.3)
-legend("topright", legend= levels(tribe), col=palette(), pch=rep(19,14) )
-
-# use the text() function to get the names of individual points
-text(PCA$pc.scores[,1],PCA$pc.scores[,2],labels=species,cex=0.7,pos=4)
 
 ```
 
@@ -72,14 +67,14 @@ mat <- matrix(c(4,5,0,1,1,2,1,1,3), 3)
 layout(mat, widths=c(1,1,1), heights=c(1,1,1))# set the size of the rows and columns
 
 par(mar=c(4, 4, 1, 1)) # sets the margins
-plot(PCA$pc.scores[,1],PCA$pc.scores[,2], col=tribe, asp=T, las=1,pch=16, cex=1.5)
-legend("topright", legend= levels(tribe), col=palette(), pch=rep(19,14) )
+plot(PCA$pc.scores[,1],PCA$pc.scores[,2], col=subfam1, asp=T, las=1,pch=16, cex=1.5)
+legend("topright", legend= levels(subfam1), col=palette(), pch=rep(19,14) )
 
 segments(min(PCA$pc.scores[,1]), 0,  max(PCA$pc.scores[,1]),0, col="grey", lty="dashed")
 segments(0, min(PCA$pc.scores[,2]), 0,  max(PCA$pc.scores[,2]), col="grey", lty="dashed")
 # in order to name individuals: text(PCA$pc.scores[,1],PCA$pc.scores[,2], species)
 
-ref <- mshape(proD$coords)
+ref <- mshape(pro_red$coords)
 #qw= c(1,4,2,6,5,7,3)
 par(mar = c(0,0,0,0)) # sets the margins
 
@@ -100,25 +95,59 @@ On the plot above we see, that Gelinae (Townes) are fairly good distinguishable 
 with the PCA scores u are also able to generate 3d plots which compare several Principal Components at once:
 
 ```{r 3D, webgl = TRUE}
-colors = c("red","cyan","magenta","yellow")[tribe]
+colors = c("red","cyan","magenta","yellow","green")[subfam1]
 plot3d(PCA$pc.scores[,1:3], col = colors, size = 9)
-text3d(PCA$pc.scores[,1:3],texts=species,pos=4,cex= 0.6)
-legend3d("topright", legend = c("Echthrini","Fossil", "Gelini", "Mesostenini"), col = c("red","cyan","magenta","yellow") , pch= 16)
+text3d(PCA$pc.scores[,1:3],texts=species1,pos=4,cex= 0.6)
+legend3d("topright", legend = levels(subfam1), col = c("red","cyan","magenta","yellow","green") , pch= 16)
 ```
 
 ## Cluster Analysis
+```{r Procrustes Distances, message = FALSE, results='hide', include=FALSE}
+library(Evomorph)
+
+inlist = list(pro_red$coords [,,])
+for ( j in 1: dim(pro_red$coords )[3] )
+  inlist[[j]] = pro_red$coords [,,j]
+
+
+ID = paste (subfam1,species1, sep = "_", collapse = NULL, recycle0 = FALSE)
+
+### PC1 for PC1dist thingy.. for empty matrix: ###################
+PCA_sc<-PCA$pc.scores
+row.names(PCA_sc) = ID
+PCdist = as.matrix( dist(PCA_sc))
+
+###  make empty matrix 
+Proc_dist= matrix( NA, dim(PCA_sc)[1], dim(PCA_sc)[1] )
+
+colnames(Proc_dist) = ID
+rownames(Proc_dist) = ID
+
+###  make a loop : calculate proc distances for each row. 
+Proc_dist
+for ( i in 1:length(ID)){
+  Proc_dist[i,] = ShapeDist(inlist, inlist[[i]])
+}
+
+write.table(Proc_dist,"Proc_distances_ban_pim_oph_cte.txt", sep=" ",row.names = TRUE, col.names = TRUE)
+
+###################################################################
+Proc_dist = read.table("Proc_distances_ban_pim_oph_cte.txt", header=T)
+```
+
 ```{r Clusters,}
 
 #Data of Alex does not include tribe
-data = data.frame(species, subfam1, PCA$pc.scores[,1:6])
+#old CA with PCA values, now conducting with Procrustes distances
+#data = data.frame(species1, subfam1, PCA$pc.scores[,1:6])
 
 # Compute distances and hierarchical clustering
-dd <- dist(scale(data[c(3:8)]), method = "euclidean")
+dd <- dist(scale(Proc_dist))
 
 ## Ward's minimum variance method
-hc <- hclust(dd, method = "ward.D2")
+hc <- hclust(dd, method = "complete")
 
-hc$labels = subfam1
+hc$labels = row.names(Proc_dist)
 
 # Convert hclust into a dendrogram and plot
 hcd <- as.dendrogram(hc)
@@ -126,13 +155,13 @@ hcd <- as.dendrogram(hc)
 ## Dendrogramm
 ```{r Bäumli, results=FALSE}
 require("dendextend") ## needs a dendrogram
-#plot(hcd)
+
 
 # Create a vector of colors, darkgreen if am is 0, green if 1.
-my_colors <- ifelse(hc$labels=="banchi", "cyan",ifelse(hc$labels=="gelina","green", ifelse(hc$labels=="ichneu", "red",ifelse(hc$labels=="ophion", "darkblue","yellow"))))
+my_colors <- ifelse(substr(hc$labels,1,6)=="banchi", "cyan",ifelse(substr(hc$labels,1,6)=="gelina","green", ifelse(substr(hc$labels,1,6)=="ichneu", "red",ifelse(substr(hc$labels,1,6)=="ophion", "darkblue",ifelse(substr(hc$labels,8,13)== "fossil", "magenta", "yellow" )))))
 #my_colors <- ifelse(hc$labels=="scolob", "forestgreen",ifelse(hc$labels=="metopi", "green","yellow"))
 
-par(mar=c(10,1,1,1))
+par(mar=c(10,5,1,1))
 hcd %>%
   set("labels_col", value = c("skyblue", "darkorange", "grey","darkorange4","deepskyblue4",
                               "darkolivegreen3","darkorchid1","firebrick","gold1","aquamarine2","brown2","darkseagreen3","black"), k=13) %>%
@@ -140,12 +169,12 @@ hcd %>%
                                     "darkolivegreen3","darkorchid1","firebrick","gold1","aquamarine2","brown2","darkseagreen3","black"),k = 13) %>%
   set("labels_cex", 0.8)  %>%
   set("leaves_pch", 19)  %>% 
-  set("nodes_cex", 0.4) %>% 
+  set("nodes_cex", 0.4) %>%
   plot(axes=FALSE)
 
 # Add the colored bar
-colored_bars(colors = my_colors, dend = hcd, rowLabels = "tribe")
-legend("topright", legend=levels(subfam1), col= c("cyan", "green", "red", "darkblue", "yellow"), pch=15)
+colored_bars(colors = my_colors, dend = hcd, rowLabels = "subfamily")
+legend("topright", legend=levels(subfam1), col= c("cyan","magenta", "green", "red", "darkblue", "yellow"), pch=15)
 
 ```
 

@@ -151,7 +151,7 @@ Proc_dist = read.table("Proc_distances_ban_pim_oph_cte.txt", header=T)
 dd <- dist(scale(Proc_dist))
 
 ## Ward's minimum variance method
-hc <- hclust(dd, method = "complete")
+hc <- hclust(dd, method = "average")
 
 hc$labels = row.names(Proc_dist)
 
@@ -179,7 +179,7 @@ hcd %>%
 
 # Add the colored bar
 colored_bars(colors = my_colors, dend = hcd, rowLabels = "subfam")
-legend("topright", legend=levels(subfam), col= c("red", "cyan"), pch=15)
+legend("topleft", legend=levels(subfam), col= c("red", "cyan"), pch=15)
 title(main= "Dendrogram of Phygadeuontinae")
 
 ```
