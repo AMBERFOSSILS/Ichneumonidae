@@ -17,6 +17,13 @@ setwd("~/GitHub/Ichneumonidae/R-Scripts/Determine Higher-Crouping")
 
 ## Preparing Data
 
+Path to Data: "~/GitHub/Ichneumonidae/R-Scripts/Determine Higher-Crouping"
+
+Data contains 234 specimens from Ophioniformes/Ichneumoniformes/Pimpliformes. However, we will only select certain subfamilies (Banchinae/Ophioninae/Pimplinae/Ichneumoninae/Phygadeuontinae (here still marked as Gelinae from Townes 1969)).
+
+!!! This is the first time these subfamilies have been compared with geometric morphometrics by forewing venation!!!
+
+After Data-Aquisation we superimpose the Data with the function gpagen().
 
 ```{r cars, include=FALSE}
 
@@ -49,7 +56,7 @@ tribe1<-as.factor(substr(dimnames(pro_red$coords)[[3]],17,19))
 ```
 
 ## PCA Analysis
-Here, A PCA  with the subfamilies Pimplinae, Gelinae, Ophioninae, Ichenumoninae and Banichnae without landmark 1 was done. 
+Here, A PCA  with the subfamilies Pimplinae, Gelinae, Ophioninae, Ichenumoninae and Banichnae without landmark 1 was done. The ophioninae are seperated from the rest of the subfamilies quite strongly.The pimplinae are also partially seperated. They partly overlap with Gelinae and Ichneumoninae. The Gelinae overlap mostly with Banchinae and partially with Pimplinae. Overall the subfamilies cluster mostly in groups. However, there are some outliers clustering within another group. The plot doesn't really differ from the plot when you include landmark 1. 
 
 ```{r pressure, fig.show='hide', results='hide'}
 
@@ -86,10 +93,6 @@ plotRefToTarget(ref,PCA$pc.shapes$PC2max)
 # Item 5
 plotRefToTarget(ref,PCA$pc.shapes$PC2min)
 ```
-
-
-On the plot above we see, that Gelinae (Townes) are fairly good distinguishable from the other Tribes. The Data however does not represent modern taxonomy: Although most specimen still belong together in the same subfamily or Tribe, there has been a lot of improvement of building phenetic relationships between these genera together with molecular Data, hence some of the outliers in this plot that seem to belong in other groups, may actually be accounted to other taxanomic groups, as shown for the Genus Hemigaster for example. 
-
 
 
 with the PCA scores u are also able to generate 3d plots which compare several Principal Components at once:
@@ -134,48 +137,44 @@ write.table(Proc_dist,"Proc_distances_ban_pim_oph_cte.txt", sep=" ",row.names = 
 ###################################################################
 Proc_dist = read.table("Proc_distances_ban_pim_oph_cte.txt", header=T)
 ```
-
+## Cluster Analysis
 ```{r Clusters,}
 
-#Data of Alex does not include tribe
-#old CA with PCA values, now conducting with Procrustes distances
-#data = data.frame(species1, subfam1, PCA$pc.scores[,1:6])
+data = data.frame(species1, subfam1, PCA$pc.scores[,1:25])
 
 # Compute distances and hierarchical clustering
-dd <- dist(scale(Proc_dist))
+
+de <- dist(scale(data[c(3:27)]), method = "euclidean")
 
 ## Ward's minimum variance method
-hc <- hclust(dd, method = "complete")
 
-hc$labels = row.names(Proc_dist)
+hd <- hclust(de, method = "ward.D2")
 
+hd$labels = paste (subfam1,species1, sep = "_", collapse = NULL, recycle0 = FALSE)
 # Convert hclust into a dendrogram and plot
-hcd <- as.dendrogram(hc)
+
+hce <- as.dendrogram (hd)
 ```
 ## Dendrogramm
-```{r Bäumli, results=FALSE}
+```{r Bäumli, results=FALSE, message=FALSE}
 require("dendextend") ## needs a dendrogram
 
-
-# Create a vector of colors, darkgreen if am is 0, green if 1.
-my_colors <- ifelse(substr(hc$labels,1,6)=="banchi", "cyan",ifelse(substr(hc$labels,1,6)=="gelina","green", ifelse(substr(hc$labels,1,6)=="ichneu", "red",ifelse(substr(hc$labels,1,6)=="ophion", "darkblue",ifelse(substr(hc$labels,8,13)== "fossil", "magenta", "yellow" )))))
-#my_colors <- ifelse(hc$labels=="scolob", "forestgreen",ifelse(hc$labels=="metopi", "green","yellow"))
-
-par(mar=c(10,5,1,1))
-hcd %>%
+par(mar=c(10,3,1,1))
+my_colors1 <- ifelse(substr(hd$labels,1,6)=="banchi", "cyan",ifelse(substr(hd$labels,1,6)=="gelina","green", ifelse(substr(hd$labels,1,6)=="ichneu", "red",ifelse(substr(hd$labels,1,6)=="ophion", "darkblue",ifelse(substr(hd$labels,8,13)== "fossil", "magenta", "yellow" )))))
+hce %>%
   set("labels_col", value = c("skyblue", "darkorange", "grey","darkorange4","deepskyblue4",
                               "darkolivegreen3","darkorchid1","firebrick","gold1","aquamarine2","brown2","darkseagreen3","black"), k=13) %>%
   set("branches_k_color", value = c("skyblue", "darkorange", "grey","darkorange4","deepskyblue4",
                                     "darkolivegreen3","darkorchid1","firebrick","gold1","aquamarine2","brown2","darkseagreen3","black"),k = 13) %>%
-  set("labels_cex", 0.8)  %>%
+  set("labels_cex", 0.7)  %>%
   set("leaves_pch", 19)  %>% 
-  set("nodes_cex", 0.4) %>%
+  set("nodes_cex", 0.4) %>% 
   plot(axes=FALSE)
 
 # Add the colored bar
-colored_bars(colors = my_colors, dend = hcd, rowLabels = "subfamily")
-legend("topright", legend=levels(subfam1), col= c("cyan","magenta", "green", "red", "darkblue", "yellow"), pch=15)
+colored_bars(colors = my_colors1, dend = hce, rowLabels = "subfam1")
+legend("topright", legend=levels(subfam1), col= c("cyan", "green", "red", "darkblue", "yellow"), pch=15)
 
 ```
 
-For the creation of the Dendrogramm only the first 6 PC scores were considered, which contribute to about 82.5% of variation. Higher PC scores did not seem to reflect the data that would be observed on the PCA plots, as the fossil was usually clustered along with a specimen from Echthrini that in contrast was also clustered in Gelinae eventhough the fossil is much more distant from Echthrini than Gelinae.
+For the creation of the Dendrogramm only the first 17 PC scores were considered, which contribute to about 95.3% of variation. The Gelinae cluster over the different subfamilies with one bigger cluster on the right side. The fossil clusters between an Ichneumoninae and Pimplininae. It is on the right side, but still not in the one cluster of Gelinae at the very right end.

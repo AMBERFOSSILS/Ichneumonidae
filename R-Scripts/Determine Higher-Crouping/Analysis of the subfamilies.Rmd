@@ -9,6 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
 require(Morpho)
+require(rgl)
 options(rgl.useNULL = TRUE) # Suppress the separate window.
 knitr::knit_hooks$set(webgl = hook_webgl)
 library(geomorph)
@@ -56,7 +57,7 @@ tribe1<-as.factor(substr(dimnames(pro_red$coords)[[3]],17,19))
 ```
 
 ## PCA Analysis
-A PCA was done with the subfamilies Pimplinae, Gelinae, Ophioninae, Ichenumoninae and Banichnae.The ophioninae are seperated from the rest of the subfamilies quite strongly.The pimplinae are also partially seperated. They partly overlap with Gelinae and Ichneumoninae. The Gelinae overlap mostly with Banchinae and partially with Pimplinae. Overall the subfamilies cluster mostly in groups. However, there are some outliers clustering within another group.   
+A PCA was done with the subfamilies Pimplinae, Gelinae, Ophioninae, Ichneumoninae and Banichnae.The ophioninae are seperated from the rest of the subfamilies quite strongly.The pimplinae are also partially seperated. They partly overlap with Gelinae and Ichneumoninae. The Gelinae overlap mostly with Banchinae and partially with Pimplinae. Overall the subfamilies cluster mostly in groups. However, there are some outliers clustering within another group.   
 
 ```{r PCA, fig.show='hide',results='hide'}
 
@@ -94,8 +95,8 @@ plotRefToTarget(ref,PCA$pc.shapes$PC2min)
 ```
 
 ## CVA
-A CVA was done with the subfamilies Pimplinae, Gelinae, Ophioninae, Ichenumoninae and Banichnae.The Ophioninae seperate very strong from the rest of the subfamilies. The Gelinae are overlapping with the Ichneumininae. The Pimplinae and Banchinae are overlapping as well. The Pimplinae have a small overlap with the Ichneumoninae.Overall the subfamilies cluster mostly in groups. However, there are two outliers that cluster in another group.
-
+A CVA was done with the subfamilies Pimplinae, Gelinae, Ophioninae, Ichenumoninae and Banichnae.The Ophioninae seperate very strong from the rest of the subfamilies. The Gelinae are overlapping with the Ichneumininae. The Pimplinae and Banchinae are overlapping as well. The Pimplinae have a small overlap with the Ichneumoninae.Overall the subfamilies cluster mostly in groups. However, there are few outliers that cluster in another group.
+The 95% confidence ellipses show the probablity of the dots really being in the ellpipses. Here, the probabilty is 95%.
 ```{r CVA}
 #CVA
 cva<- CVA(pro_red$coords, groups = subfam1, plot= T, rounds= 1000)
@@ -171,7 +172,7 @@ hce <- as.dendrogram (hd)
 ```{r Bäumli, results=FALSE, message=FALSE}
 require("dendextend") ## needs a dendrogram
 
-
+par(mar= c(10,3,1,1))
 my_colors1 <- ifelse(substr(hd$labels,1,6)=="banchi", "cyan",ifelse(substr(hd$labels,1,6)=="gelina","green", ifelse(substr(hd$labels,1,6)=="ichneu", "red",ifelse(substr(hd$labels,1,6)=="ophion", "darkblue",ifelse(substr(hd$labels,8,13)== "fossil", "magenta", "yellow" )))))
 hce %>%
   set("labels_col", value = c("skyblue", "darkorange", "grey","darkorange4","deepskyblue4",
@@ -189,4 +190,4 @@ legend("topright", legend=levels(subfam1), col= c("cyan", "green", "red", "darkb
 
 ```
 
-For the creation of the Dendrogramm only the first 17 PC scores were considered, which contribute to about 95.3% of variation. 
+For the creation of the Dendrogramm only the first 17 PC scores were considered, which contribute to about 95.3% of variation. The fossil clusters with the Gelinae with one Ichneumininae adjoining. The fossil seems to belong to the subfamily Gelinae. The subfamilies cluster in groups with some outliers that are present in other subfamilies. 
