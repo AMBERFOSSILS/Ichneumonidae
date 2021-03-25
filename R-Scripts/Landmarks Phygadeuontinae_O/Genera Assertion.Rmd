@@ -105,8 +105,9 @@ plotRefToTarget(ref,PCA2$pc.shapes$PC2max)
 plotRefToTarget(ref,PCA2$pc.shapes$PC2min)
 ```
 
+In this plot we clearly see that there is also variance in between our Phygadeuontinae and that our specimen does cluster with some other specimen. (especially with thanee, but as we will see in our Dendrogramm, their phenetic relationship is not as close. This is due to the fact that in a PCA-Plot we only see two scores and in the dendrogram we use Procrustes Distances instead).
 
-## Clustering in new Taxonomy and Dendrogramm
+## Clustering in new Taxonomy and Dendrogram
 
 ```{r Procrustes Distances, message = FALSE, results='hide', include=FALSE}
 library(Evomorph)
@@ -183,3 +184,5 @@ legend("topleft", legend=levels(subfam), col= c("red", "cyan"), pch=15)
 title(main= "Dendrogram of Phygadeuontinae")
 
 ```
+
+Interestingly in this dendrogram our fossil clusters with isaini (Isadelphus inimicus) and other specimen which are present in scandinavia, which is thought to be the origin of Baltic Amber. 

@@ -102,6 +102,7 @@ plotRefToTarget(ref,PCA2$pc.shapes$PC2max)
 plotRefToTarget(ref,PCA2$pc.shapes$PC2min)
 ```
 
+With our meanshape we now get much closer into the family of phygodeuontinae as with our original asset. However this is not only due to our approach of creating a mean for the coordinates, but also because we realized that in our initial fossil data the landmark number 1 was misplaced. 
 
 ## Clustering in new Taxonomy and Dendrogramm
 
@@ -141,7 +142,7 @@ Proc_dist = read.table("Proc_distances_ban_pim_oph_cte.txt", header=T)
 ```
 
 
-```{r Dendrogramm, results='hide', message = FALSE}
+```{r Dendrogramm, results='hide', message = FALSE, out.height="150%"}
 #summary(PCA2)
 #data = data.frame(species, subfam, PCA2$pc.scores[,1:17])
 
@@ -157,27 +158,26 @@ hc$labels = subfam
 hcd <- as.dendrogram(hc)
 
 require("dendextend") ## needs a dendrogram
-#plot(hcd)
+
 
 # Create a vector of colors, darkgreen if am is 0, green if 1.
 my_colors <- ifelse(hc$labels=="crypti", "cyan",ifelse(hc$labels=="ateleu","yellow", ifelse(hc$labels=="meansp", "green", ifelse(hc$labels == "ichneu", "red", "darkblue"))))
 
 
-par(mar=c(10,1,1,1))
+par(mar=c(10,3,1,0), cex = 1, font= 3)
+
 hcd %>%
-  set("labels_col", value = c("skyblue", "darkorange", "grey","darkorange4","deepskyblue4",
-                              "darkolivegreen3","darkorchid1","firebrick","gold1","aquamarine2","brown2","darkseagreen3","black"), k=13) %>%
   set("branches_k_color", value = c("skyblue", "darkorange", "grey","darkorange4","deepskyblue4",
                                     "darkolivegreen3","darkorchid1","firebrick","gold1","aquamarine2","brown2","darkseagreen3","black"),k = 13) %>%
   set("labels_cex", 0.8)  %>%
   set("leaves_pch", 19)  %>% 
   set("nodes_cex", 0.4) %>% 
-  plot(axes=FALSE)
+  plot(axes=FALSE,horiz=TRUE, height = 500)
 
 # Add the colored bar
 
 colored_bars(colors = my_colors, dend = hcd, rowLabels = "subfam")
-legend("topright", legend=levels(subfam), col= c("yellow", "cyan", "red", "green", "darkblue"), pch=15)
+legend("topleft", legend=levels(subfam), col= c("yellow", "cyan", "red", "green", "darkblue"), pch=15, cex = 0.6)
 title(main= "Dendrogram with Procrustes Distances between all specimen")
 
 ```
