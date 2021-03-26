@@ -169,25 +169,28 @@ hd$labels = paste (subfam1,species1, sep = "_", collapse = NULL, recycle0 = FALS
 hce <- as.dendrogram (hd)
 ```
 ## Dendrogramm
-```{r Bäumli, results=FALSE, message=FALSE}
+```{r Bäumli, results=FALSE, message=FALSE, fig.width= 9, fig.height= 20}
 require("dendextend") ## needs a dendrogram
 
 par(mar= c(10,3,1,1))
-my_colors1 <- ifelse(substr(hd$labels,1,6)=="banchi", "cyan",ifelse(substr(hd$labels,1,6)=="gelina","green", ifelse(substr(hd$labels,1,6)=="ichneu", "red",ifelse(substr(hd$labels,1,6)=="ophion", "darkblue",ifelse(substr(hd$labels,8,13)== "fossil", "magenta", "yellow" )))))
+Label <- hce%>%labels
+my_colors1 = matrix( NA, dim(Proc_dist))
+for(i in 1:length(row.names(Proc_dist))){
+my_colors1[i] <- switch(substr(Label[i],1,6), "banchi" = "cyan", "pimpli" = "yellow", "gelina" = "green", "ophion" = "darkblue", "ichneu" = "red")
+}
 hce %>%
-  set("labels_col", value = c("skyblue", "darkorange", "grey","darkorange4","deepskyblue4",
-                              "darkolivegreen3","darkorchid1","firebrick","gold1","aquamarine2","brown2","darkseagreen3","black"), k=13) %>%
+  set("labels_col", value =  my_colors1) %>%
   set("branches_k_color", value = c("skyblue", "darkorange", "grey","darkorange4","deepskyblue4",
                                     "darkolivegreen3","darkorchid1","firebrick","gold1","aquamarine2","brown2","darkseagreen3","black"),k = 13) %>%
   set("labels_cex", 0.7)  %>%
   set("leaves_pch", 19)  %>% 
-  set("nodes_cex", 0.4) %>% 
-  plot(axes=FALSE)
+  set("nodes_cex", 0.4) %>%
+  hang.dendrogram(hang_height = .8) %>%
+  plot(axes=FALSE, main= "Dendrogram with ward.D2", horiz = TRUE)
 
 # Add the colored bar
-colored_bars(colors = my_colors1, dend = hce, rowLabels = "subfam1")
-legend("topright", legend=levels(subfam1), col= c("cyan", "green", "red", "darkblue", "yellow"), pch=15)
-
+#colored_bars(colors = my_colors1, rowLabels = "subfam")
+legend("topleft", legend=levels(subfam1), col= c("cyan", "green", "red", "darkblue", "yellow"), pch=15)
 ```
 
-For the creation of the Dendrogramm only the first 17 PC scores were considered, which contribute to about 95.3% of variation. The fossil clusters within the subfamily Gelinae with one Ichneumininae adjoining. The fossil seems to belong to the subfamily Gelinae. The subfamilies cluster in groups with some outliers that are present in other subfamilies. 
+Principalcomponents 1:25, which explain about 98% of variation, were used to create this dendrogram with the hclust method "ward.D2". Even though there are outliers within this plot we clearly see, that our main higher groupings are clustered as we would expect it. 
