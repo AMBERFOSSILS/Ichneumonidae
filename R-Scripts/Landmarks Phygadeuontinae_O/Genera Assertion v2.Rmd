@@ -1,5 +1,5 @@
 ---
-title: "Genus Assertion"
+title: "Genus Assertion v2"
 author: "Robin von Allmen"
 date: "18 3 2021"
 output: html_document
@@ -54,10 +54,13 @@ meanfossil <- array(proD$consensus,dim= c(29,2,1))
 #change the name of the 3rd row so that we can later label our fossil specifically.
 dimnames(meanfossil)[[3]] <- "fossil_meansp_g.JPG"
 
-landmarkphygad = readland.tps("PHYGAD2.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
-landmarkphygad2 = readland.tps("DATASET_PHYGAD.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
+landmarkMod = readland.tps("DATA_MODERN_TAX.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
+landmarkMod2 = readland.tps("DATA_MODERN_TAX_2.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
+landmarkModern <- Abind(landmarkMod,landmarkMod2)
+subfamMod = as.factor( substr( dimnames(landmarkModern)[[3]], 8, 13))
+landmarkphygad = readland.tps("DATASET_PHYGAD.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
 
-landmark <- Abind(landmarkphygad,meanfossil,landmarkphygad2)
+landmark <- Abind(landmarkphygad,meanfossil,landmarkModern[,,subfamMod %in% "phygad"])
 
 species = as.factor( substr( dimnames(landmark)[[3]], 1, 6))
 subfam = as.factor( substr( dimnames(landmark)[[3]], 8, 13))
@@ -137,10 +140,10 @@ for ( i in 1:length(ID)){
   Proc_dist[i,] = ShapeDist(inlist, inlist[[i]])
 }
 
-write.table(Proc_dist,"Proc_distances_ban_pim_oph_cte.txt", sep=" ",row.names = TRUE, col.names = TRUE)
+write.table(Proc_dist,"Proc_dist_phygad.txt", sep=" ",row.names = TRUE, col.names = TRUE)
 
 ###################################################################
-Proc_dist = read.table("Proc_distances_ban_pim_oph_cte.txt", header=T)
+Proc_dist = read.table("Proc_dist_phygad.txt", header=T)
 
 ```
 
@@ -153,10 +156,8 @@ require("dendextend") ## needs a dendrogram
 
 # Create a vector of colors, darkgreen if am is 0, green if 1.
 
-par(mar=c(10,3,1,0), cex = 1, font= 3)
-
 library(pvclust)
-result <- pvclust(scale(Proc_dist), method.dist="cor", method.hclust="average", nboot=1000)
+result <- pvclust(scale(Proc_dist), method.dist="cor", method.hclust="average", nboot=1200)
 
 dend <- as.dendrogram(result)
 Label <- dend%>%labels
@@ -180,7 +181,7 @@ result %>% text
 result %>% pvrect(alpha=0.95)
 
 
-legend("topright", legend=levels(subfam), col= c("red", "cyan"), pch=15, cex = 2)
+legend("topleft", legend=levels(subfam), col= c("red", "cyan"), pch=15, cex = 2)
 
 
 ```

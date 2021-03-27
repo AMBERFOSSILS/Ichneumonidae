@@ -56,7 +56,11 @@ dimnames(meanfossil)[[3]] <- "fossil_meansp_g.JPG"
 
 landmark = readland.tps("DATA_MODERN_TAX.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
 landmarkIchneu = readland.tps("ICHNEUMONINAE.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
-landmark <- Abind(landmark,meanfossil,landmarkIchneu)
+landmarkphygad = readland.tps("DATASET_PHYGAD.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
+landmarkphygad1 = readland.tps("PHYGAD2.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
+landmarkphygad2 = readland.tps("PHYGAD3.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
+landmark <- Abind(landmark,meanfossil,landmarkIchneu, landmarkphygad, landmarkphygad1, landmarkphygad2)
+
 species = as.factor( substr( dimnames(landmark)[[3]], 1, 6))
 subfam = as.factor( substr( dimnames(landmark)[[3]], 8, 13))
 areolet = as.factor( substr( dimnames(landmark)[[3]], 15, 15))
