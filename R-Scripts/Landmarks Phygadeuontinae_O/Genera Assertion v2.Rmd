@@ -23,7 +23,7 @@ First we read in the Data of our 10 samples of our Fossil to create a procrustes
 
 ```{r cars, results=FALSE}
 landmark = readland.tps("FOSSIL_R.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
-
+landmarkisa = readland.tps("GENUS_ISADELPHUS.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
 
 ##      define Semilandmarks, first LM is the start, last one the end (those are both
 ##      fixed landmarks, in between are the semilandmarks):
@@ -32,6 +32,10 @@ sliders = define.sliders(c(15,22:29,16))
 ##      procrustes fit - "superimposition" - rotates and scales the landmarks to their closest distance,
 ##      minimizing the shape and size difference:
 proD<-gpagen(landmark, surfaces = NULL, curves = sliders,
+             PrinAxes = FALSE, max.iter = NULL, ProcD = T, Proj = TRUE,
+             print.progress = TRUE)
+
+proDisa<-gpagen(landmarkisa, surfaces = NULL, curves = sliders,
              PrinAxes = FALSE, max.iter = NULL, ProcD = T, Proj = TRUE,
              print.progress = TRUE)
 
@@ -51,8 +55,10 @@ Now we create our Mean shape for our specimen and load the other data which we a
 ```{r create Meanshape, fig.show='hide', results='hide'}
 #consesus Data from the proD contains the mean points for the procrustes fit of the fossil versions.
 meanfossil <- array(proD$consensus,dim= c(29,2,1))
+meanisa <- array(proDisa$consensus,dim= c(29,2,1))
 #change the name of the 3rd row so that we can later label our fossil specifically.
 dimnames(meanfossil)[[3]] <- "fossil_meansp_g.JPG"
+dimnames(meanisa)[[3]] <- "isadel_meanis_g.JPG"
 
 landmarkMod = readland.tps("DATA_MODERN_TAX.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
 landmarkMod2 = readland.tps("DATA_MODERN_TAX_2.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
@@ -60,12 +66,11 @@ landmarkModern <- Abind(landmarkMod,landmarkMod2)
 subfamMod = as.factor( substr( dimnames(landmarkModern)[[3]], 8, 13))
 landmarkphygad = readland.tps("DATASET_PHYGAD.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
 
-landmark <- Abind(landmarkphygad,meanfossil,landmarkModern[,,subfamMod %in% "phygad"])
+landmark <- Abind(landmarkphygad,meanfossil,landmarkisa, landmarkModern[,,subfamMod %in% "phygad"])
 
 species = as.factor( substr( dimnames(landmark)[[3]], 1, 6))
-subfam = as.factor( substr( dimnames(landmark)[[3]], 8, 13))
 areolet = as.factor( substr( dimnames(landmark)[[3]], 15, 15))
-
+subfam = as.factor( substr( dimnames(landmark)[[3]], 8, 13))
 
 ##      define Semilandmarks, first LM is the start, last one the end (those are both
 ##      fixed landmarks, in between are the semilandmarks):
@@ -163,7 +168,7 @@ dend <- as.dendrogram(result)
 Label <- dend%>%labels
 my_colors1 = matrix( NA, dim(Proc_dist))
 for(i in 1:length(row.names(Proc_dist))){
-my_colors1[i] <- switch(substr(Label[i],1,6), "phygad" = "cyan", "meansp" = "red")
+my_colors1[i] <- switch(substr(Label[i],1,6), "phygad" = "lightpink", "meansp" = "maroon1", "meanis" = "mediumorchid1")
 }
 
 # with a dendrogram of pvrect
@@ -181,7 +186,7 @@ result %>% text
 result %>% pvrect(alpha=0.95)
 
 
-legend("topleft", legend=levels(subfam), col= c("red", "cyan"), pch=15, cex = 2)
+legend("topright", legend=levels(subfam), col= c("marron1", "lightpink"), pch=15, cex = 2)
 
 
 ```
