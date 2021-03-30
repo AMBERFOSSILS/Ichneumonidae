@@ -108,13 +108,13 @@ ref <- mshape(pro_red$coords)
 
 par(mar = c(0,0,0,0)) # sets the margins
 
-plotRefToTarget(ref,PCA$pc.shapes$PC1min)
+#plotRefToTarget(ref,PCA$pc.shapes$PC1min)
 # Item 3
-plotRefToTarget(ref,PCA$pc.shapes$PC1max)
+#plotRefToTarget(ref,PCA$pc.shapes$PC1max)
 # Item 4
-plotRefToTarget(ref,PCA$pc.shapes$PC2max)
+#plotRefToTarget(ref,PCA$pc.shapes$PC2max)
 # Item 5
-plotRefToTarget(ref,PCA$pc.shapes$PC2min)
+#plotRefToTarget(ref,PCA$pc.shapes$PC2min)
 ```
 
 ## CVA
@@ -161,12 +161,12 @@ warpgrid <- array(c(array1, array2), dim= c(28,2))
 par(mar = c(0,0,0,0))
 
 
-
+plotRefToTarget(ref,PCA$pc.shapes$PC1max, method = "points", links= warpgrid,gridPars = gridPar(pt.bg = "grey",pt.size=0.5, tar.pt.bg = "darkorange" ,tar.link.col = "darkorange", tar.pt.size = 0.5))
 #plot the mean against the maxima of different shapes.
 plotRefToTarget(ref,PCA$pc.shapes$PC1min, method = "points", links= warpgrid,gridPars = gridPar(pt.bg = "grey",pt.size=0.5, tar.pt.bg = "darkorange" ,tar.link.col = "darkorange", tar.pt.size = 0.5, link.lwd=2, tar.link.lwd = 2))
-plotRefToTarget(ref,PCA$pc.shapes$PC1max, method = "points", links= warpgrid,gridPars = gridPar(pt.bg = "grey",pt.size=0.5, tar.pt.bg = "darkorange" ,tar.link.col = "darkorange", tar.pt.size = 0.5))
-plotRefToTarget(ref,PCA$pc.shapes$PC2min, method = "points", links= warpgrid,gridPars = gridPar(pt.bg = "grey",pt.size=0.5, tar.pt.bg = "darkorange" ,tar.link.col = "darkorange", tar.pt.size = 0.5))
 plotRefToTarget(ref,PCA$pc.shapes$PC2max, method = "points", links= warpgrid,gridPars = gridPar(pt.bg = "grey",pt.size=0.5, tar.pt.bg = "darkorange" ,tar.link.col = "darkorange", tar.pt.size = 0.5))
+plotRefToTarget(ref,PCA$pc.shapes$PC2min, method = "points", links= warpgrid,gridPars = gridPar(pt.bg = "grey",pt.size=0.5, tar.pt.bg = "darkorange" ,tar.link.col = "darkorange", tar.pt.size = 0.5))
+
 
 ```
 
