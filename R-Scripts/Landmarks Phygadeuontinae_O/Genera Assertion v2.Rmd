@@ -66,7 +66,7 @@ landmarkModern <- Abind(landmarkMod,landmarkMod2)
 subfamMod = as.factor( substr( dimnames(landmarkModern)[[3]], 8, 13))
 landmarkphygad = readland.tps("DATASET_PHYGAD.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
 
-landmark <- Abind(landmarkphygad,meanfossil,landmarkisa, landmarkModern[,,subfamMod %in% "phygad"])
+landmark <- Abind(landmarkphygad,meanfossil,meanisa, landmarkModern[,,subfamMod %in% "phygad"])
 
 species = as.factor( substr( dimnames(landmark)[[3]], 1, 6))
 areolet = as.factor( substr( dimnames(landmark)[[3]], 15, 15))
@@ -186,7 +186,7 @@ result %>% text
 result %>% pvrect(alpha=0.95)
 
 
-legend("topright", legend=levels(subfam), col= c("marron1", "lightpink"), pch=15, cex = 2)
+legend("topright", legend=levels(subfam), col= c("mediumorchid1","maroon1", "lightpink"), pch=15, cex = 2)
 
 
 ```
