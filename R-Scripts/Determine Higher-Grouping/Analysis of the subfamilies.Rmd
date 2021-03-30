@@ -46,7 +46,7 @@ sliders = define.sliders(c(15,22:29,16))
 proD<-gpagen(landmark, surfaces = NULL, curves= sliders,
              PrinAxes = FALSE, max.iter = NULL, ProcD = F, Proj = TRUE,
              print.progress = TRUE)
-use= c("pimpli", "banchi", "phygad", "ophion", "ichneu")
+use= c("pimpli", "banchi", "phygad", "ophion", "fossil")
 reduced<- proD$coords[,,subfam%in% use]
 pro_red<-gpagen(reduced, surfaces = NULL, curves= sliders,
              PrinAxes = FALSE, max.iter = NULL, ProcD = F, Proj = TRUE,
@@ -75,12 +75,12 @@ layout(mat, widths=c(1,1,1), heights=c(1,1,1))# set the size of the rows and col
 
 my_colors = matrix( NA, dim(PCA$pc.scores[,]))
 for(i in 1:length( row.names(PCA$pc.scores[,]))){
-my_colors[i] <- switch(substr(row.names(PCA$pc.scores[,])[i],8,13), "banchi" = "gold1", "ichneu" = "lightskyblue", "ophion" = "blueviolet",  "phygad" = "lightpink","pimpli" = "chartreuse3")
+my_colors[i] <- switch(substr(row.names(PCA$pc.scores[,])[i],8,13), "banchi" = "goldenrod1", "fossil"="black", "ophion" = "blueviolet",  "phygad" = "violet","pimpli" = "chartreuse3")
 }
 
 par(mar=c(4, 4, 1, 1)) # sets the margins
 plot(PCA$pc.scores[,1],PCA$pc.scores[,2], col=my_colors, asp=T, las=1,pch=16, cex=1.5)
-legend("topright", legend= levels(subfam1), col= c("gold1", "lightskyblue", "blueviolet", "lightpink", "chartreuse3"), pch=rep(19,14) )
+legend("topright", legend= levels(subfam1), col= c("goldenrod1", "black", "blueviolet", "violet", "chartreuse3"), pch=rep(19,14) )
 
 
 segments(min(PCA$pc.scores[,1]), 0,  max(PCA$pc.scores[,1]),0, col="grey", lty="dashed")
