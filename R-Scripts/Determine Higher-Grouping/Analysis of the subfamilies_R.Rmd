@@ -143,7 +143,7 @@ for(jj in 1:length(levels(subfam1))){
   ii=levels(subfam1)[jj]
   kk=chull(cva$CVscores[subfam1==ii,1:2])
   lines(cva$CVscores[subfam1==ii,1][c(kk, kk[1])],
-        cva$CVscores[subfam1==ii,2][c(kk, kk[1])], col=give_color(jj))
+        cva$CVscores[subfam1==ii,2][c(kk, kk[1])], col=give_color(ii))
 
 }
 
