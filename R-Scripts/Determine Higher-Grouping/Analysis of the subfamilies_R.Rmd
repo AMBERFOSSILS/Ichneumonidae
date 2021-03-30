@@ -18,12 +18,12 @@ setwd("~/GitHub/Ichneumonidae/R-Scripts/Determine Higher-Grouping")
 
 give_color <- function(subfamily) {
  if(!is.vector(subfamily)){
-  color <- switch(subfamily, "banchi" = "gold1", "ichneu" = "lightskyblue", "ophion" = "blueviolet",  "phygad" = "lightpink","pimpli" = "chartreuse3")}
+  color <- switch(substr(subfamily,8,13), "banchi" = "goldenrod1", "fossil"="black", "ophion" = "blueviolet",  "phygad" = "violet","pimpli" = "chartreuse3", "ichneu" = "grey")}
   
   else{
     color = matrix( NA, length(subfamily))
     for(i in 1:length(subfamily)){
-      color[i] <-switch(if(nchar(subfamily[i])>10){substr(subfamily[i],8,13)}else{subfamily[i]}, "banchi" = "gold1", "ichneu" = "lightskyblue", "ophion" = "blueviolet",  "phygad" = "lightpink","pimpli" = "chartreuse3")
+      color[i] <-switch(if(nchar(subfamily[i])>13){substr(subfamily[i],8,13)}else{substr(subfamily[i],1,6)}, "banchi" = "goldenrod1", "fossil"="black", "ophion" = "blueviolet",  "phygad" = "violet","pimpli" = "chartreuse3")
 
     }
   }
@@ -58,11 +58,14 @@ sliders = define.sliders(c(15,22:29,16))
 
 ##      procrustes fit - "superimposition" - rotates and scales the landmarks to their closest distance,
 ##      minimizing the shape and size difference:
+use= c("pimpli", "banchi", "phygad", "ophion", "fossil")
+
 proD<-gpagen(landmark, surfaces = NULL, curves= sliders,
              PrinAxes = FALSE, max.iter = NULL, ProcD = F, Proj = TRUE,
              print.progress = TRUE)
-use= c("pimpli", "banchi", "phygad", "ophion", "ichneu")
+
 reduced<- proD$coords[,,subfam%in% use]
+
 pro_red<-gpagen(reduced, surfaces = NULL, curves= sliders,
              PrinAxes = FALSE, max.iter = NULL, ProcD = F, Proj = TRUE,
              print.progress = TRUE)
@@ -101,7 +104,7 @@ segments(0, min(PCA$pc.scores[,2]), 0,  max(PCA$pc.scores[,2]), col="grey", lty=
 
 # in order to name individuals: text(PCA$pc.scores[,1],PCA$pc.scores[,2], species)
 
-ref <- mshape(proD$coords)
+ref <- mshape(pro_red$coords)
 
 par(mar = c(0,0,0,0)) # sets the margins
 
@@ -132,7 +135,7 @@ par(mar=c(4, 4, 1, 1))
 plot(cva$CVscores, col=give_color(row.names(cva$CVscores)), pch=16,asp=T,
      xlab=paste("1st canonical axis", paste(round(cva$Var[1,2],1),"%")),
      ylab=paste("2nd canonical axis", paste(round(cva$Var[2,2],1),"%")),
-    las=1, cex=1, main = "CVA of Higher-Groupings")
+    las=1, cex=1)
 legend("bottomright", legend = levels(subfam1), col = give_color(levels(subfam1)), pch = 16)
 
 ##  add hulls to plot (merge groups)
@@ -223,10 +226,7 @@ require("dendextend") ## needs a dendrogram
 
 par(mar= c(10,3,1,5))
 Label <- hce%>%labels
-my_colors1 = matrix( NA, dim(Proc_dist))
-for(i in 1:length(row.names(Proc_dist))){
-my_colors1[i] <- give_color(substr(Label[i],1,6))
-}
+my_colors1 = give_color(Label)
 hce %>%
   set("labels_col", value =  my_colors1) %>%
   set("branches_k_color", value = c("skyblue", "darkorange", "grey","darkorange4","deepskyblue4",
