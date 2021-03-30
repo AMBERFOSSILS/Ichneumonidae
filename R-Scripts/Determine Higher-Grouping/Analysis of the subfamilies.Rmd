@@ -103,7 +103,7 @@ plotRefToTarget(ref,PCA$pc.shapes$PC2min)
 
 ## CVA
 A CVA was done with the subfamilies Pimplinae, Gelinae, Ophioninae, Ichenumoninae and Banichnae.The Ophioninae seperate very strong from the rest of the subfamilies. The Gelinae are overlapping with the Ichneumininae. The Pimplinae and Banchinae are overlapping as well. The Pimplinae have a small overlap with the Ichneumoninae.Overall the subfamilies cluster mostly in groups. However, there are few outliers that cluster in another group.
-The 95% confidence ellipses show the probablity of the dots really being in the ellpipses. Here, the probabilty is 95%.
+The 95% confidence ellipses show the probablity of the dots really being in the ellpipses. Here, the probabilty is 95%. 
 ```{r CVA}
 #CVA
 cva<- CVA(pro_red$coords, groups = subfam1, plot= T, rounds= 1000)
