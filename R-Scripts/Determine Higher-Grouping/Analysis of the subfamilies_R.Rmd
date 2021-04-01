@@ -80,7 +80,9 @@ A PCA was done with the subfamilies Pimplinae, Gelinae, Ophioninae, Ichneumonina
 ```{r PCA, fig.show='hide',results='hide'}
 
 PCA <-plotTangentSpace(pro_red$coords, groups=subfam1, legend=T)
-
+data = data.frame(species1, subfam1, PCA$pc.scores[,1:25])
+pvclust(data, method.hclust="ward.D2")
+summary(PCA)
 
 ```
 
@@ -93,10 +95,11 @@ layout(mat, widths=c(1,1,1), heights=c(1,1,1))# set the size of the rows and col
 
 my_colors = give_color(row.names(PCA$pc.scores))
 
-
+pdf("PCA.pdf", width = 10, height= 9)
 par(mar=c(4, 4, 1, 1)) # sets the margins
-plot(PCA$pc.scores[,1],PCA$pc.scores[,2], col=my_colors, asp=T, las=1,pch=16, cex=1.5)
-legend("topright", legend= levels(subfam1), col= give_color(levels(subfam1)), pch=rep(19,14) )
+x<- ("~/GitHub/Ichneumonidae/R-Scripts/Determine Higher-Grouping")
+plot(PCA$pc.scores[,1],PCA$pc.scores[,2], col=my_colors, asp=T, las=1,pch=16, cex=1.5, xlab = "PC1 (36.4%)", ylab = "PC2 (21.4%)", bty="n", main = "PCA of higher-groupings", cex.main=1.5)
+legend("bottomleft", legend= levels(subfam1), col= give_color(levels(subfam1)), pch=rep(19,14) )
 
 
 segments(min(PCA$pc.scores[,1]), 0,  max(PCA$pc.scores[,1]),0, col="grey", lty="dashed")
@@ -107,6 +110,7 @@ segments(0, min(PCA$pc.scores[,2]), 0,  max(PCA$pc.scores[,2]), col="grey", lty=
 ref <- mshape(pro_red$coords)
 
 par(mar = c(0,0,0,0)) # sets the margins
+dev.off()
 
 #plotRefToTarget(ref,PCA$pc.shapes$PC1min)
 # Item 3
