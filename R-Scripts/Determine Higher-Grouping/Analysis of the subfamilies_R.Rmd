@@ -74,6 +74,17 @@ species1<-as.factor(substr(dimnames(pro_red$coords)[[3]],1,6))
 tribe1<-as.factor(substr(dimnames(pro_red$coords)[[3]],17,19))
 ```
 
+## Relationship between Size and Shape
+
+```{r cSize}
+gdf <- geomorph.data.frame(pro_red, group = subfam1, species =species1)
+fit.size <- procD.lm(coords ~ log(Csize), data = gdf, print.progress = FALSE)
+summary(fit.size)
+plot(fit.size, type = "regression", reg.type = "PredLine", predictor = log(gdf$Csize), col= subfam1)
+
+```
+
+
 ## PCA Analysis
 A PCA was done with the subfamilies Pimplinae, Gelinae, Ophioninae, Ichneumoninae and Banichnae.The ophioninae are seperated from the rest of the subfamilies quite strongly.The pimplinae are also partially seperated. They partly overlap with Gelinae and Ichneumoninae. The Gelinae overlap mostly with Banchinae and partially with Pimplinae. Overall the subfamilies cluster mostly in groups. However, there are some outliers clustering within another group.   
 

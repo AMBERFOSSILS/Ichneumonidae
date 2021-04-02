@@ -9,12 +9,24 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 setwd("~/GitHub/Ichneumonidae/R-Scripts/MeanShape Fossil")
 library(knitr)
-require(rgl)
+require(Morpho)
 require(DescTools)
 options(rgl.useNULL = TRUE) # Suppress the separate window.
 knitr::knit_hooks$set(webgl = hook_webgl)
 library(geomorph)
+give_color <- function(subfamily) {
+ if(!is.vector(subfamily)){
+  color <- switch(substr(subfamily,8,13), "fossil"="black",  "phygad" = "violet", "ichneu" = "lightskyblue", "crypti" = "palegreen", "ateleu" = "darkorange")}
+  
+  else{
+    color = matrix( NA, length(subfamily))
+    for(i in 1:length(subfamily)){
+      color[i] <-switch(if(nchar(subfamily[i])>13){substr(subfamily[i],8,13)}else{substr(subfamily[i],1,6)}, "fossil"="black",  "phygad" = "violet", "ichneu" = "lightskyblue", "crypti" = "palegreen", "ateleu" = "darkorange")
 
+    }
+  }
+ return(color)
+}
 ```
 
 ## Preparing Data
@@ -52,14 +64,14 @@ Now we create our Mean shape for our specimen and load the other data which we a
 #consesus Data from the proD contains the mean points for the procrustes fit of the fossil versions.
 meanfossil <- array(proD$consensus,dim= c(29,2,1))
 #change the name of the 3rd row so that we can later label our fossil specifically.
-dimnames(meanfossil)[[3]] <- "fossil_meansp_g.JPG"
+dimnames(meanfossil)[[3]] <- "fossil_fossil_g.JPG"
 
 landmark = readland.tps("DATA_MODERN_TAX.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
 landmarkIchneu = readland.tps("ICHNEUMONINAE.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
 landmarkphygad = readland.tps("DATASET_PHYGAD.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
 landmarkphygad1 = readland.tps("PHYGAD2.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
-landmarkphygad2 = readland.tps("PHYGAD3.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
-landmark <- Abind(landmark,meanfossil,landmarkIchneu, landmarkphygad, landmarkphygad1, landmarkphygad2)
+# landmarkphygad2 = readland.tps("PHYGAD3.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
+landmark <- Abind(landmark,meanfossil,landmarkIchneu, landmarkphygad, landmarkphygad1)
 
 species = as.factor( substr( dimnames(landmark)[[3]], 1, 6))
 subfam = as.factor( substr( dimnames(landmark)[[3]], 8, 13))
@@ -79,34 +91,82 @@ proD<-gpagen(landmark, surfaces = NULL, curves = sliders,
 PCA2 <-plotTangentSpace(proD$coords, groups=subfam, legend=T)
 ```
 
-```{r plot,echo=FALSE}
+```{r plot,echo=FALSE, fig.width= 15, fig.height= 7}
   ## the more beautiful version:
-
-mat <- matrix(c(4,5,0,1,1,2,1,1,3), 3)
-layout(mat, widths=c(1,1,1), heights=c(1,1,1))# set the size of the rows and columns
-
-par(mar=c(4, 4, 1, 1)) # sets the margins
-plot(PCA2$pc.scores[,1],PCA2$pc.scores[,2], col=subfam, asp=T, las=1,pch=16, cex=1.5)
-legend("topright", legend= levels(subfam), col=palette(), pch=rep(19,14) )
+# set the size of the rows and columns
+pdf("PCA2.pdf", height = 7, width= 15)
+par(mar=c(4, 6, 3, 1), mfrow= c(1,2)) # sets the margins
+plot(PCA2$pc.scores[,1],PCA2$pc.scores[,2], col=give_color(row.names(PCA2$pc.scores)), asp=T, las=1,pch=16, cex=1.5,
+     xlab = paste("1st principle component", paste(round(PCA2$pc.summary$importance[2,1]*100,1),"%")),
+     ylab = paste("2nd principle component", paste(round(PCA2$pc.summary$importance[2,2]*100,1),"%")))
 
 segments(min(PCA2$pc.scores[,1]), 0,  max(PCA2$pc.scores[,1]),0, col="grey", lty="dashed")
 segments(0, min(PCA2$pc.scores[,2]), 0,  max(PCA2$pc.scores[,2]), col="grey", lty="dashed")
-# in order to name individuals: text(PCA$pc.scores[,1],PCA$pc.scores[,2], species)
 
-ref <- mshape(proD$coords)
-#qw= c(1,4,2,6,5,7,3)
-par(mar = c(0,0,0,0)) # sets the margins
 
-plotRefToTarget(ref,PCA2$pc.shapes$PC1min)
-# Item 3
-plotRefToTarget(ref,PCA2$pc.shapes$PC1max)
-# Item 4
-plotRefToTarget(ref,PCA2$pc.shapes$PC2max)
-# Item 5
-plotRefToTarget(ref,PCA2$pc.shapes$PC2min)
+plot(PCA2$pc.scores[,1],PCA2$pc.scores[,3], col=give_color(row.names(PCA2$pc.scores)), asp=T, las=1,pch=16, cex=1.5,
+     xlab = paste("1st principle component", paste(round(PCA2$pc.summary$importance[2,1]*100,1),"%")),
+     ylab = paste("3rd principle component", paste(round(PCA2$pc.summary$importance[2,3]*100,1),"%")))
+
+segments(min(PCA2$pc.scores[,1]), 0,  max(PCA2$pc.scores[,1]),0, col="grey", lty="dashed")
+segments(0, min(PCA2$pc.scores[,2]), 0,  max(PCA2$pc.scores[,2]), col="grey", lty="dashed")
 ```
 
 With our meanshape we now get much closer into the family of phygodeuontinae as with our original asset. However this is not only due to our approach of creating a mean for the coordinates, but also because we realized that in our initial fossil data the landmark number 1 was misplaced. 
+
+## CVA
+
+```{r CVA}
+#CVA
+#subfam[subfam %in% "fossil"] <- "phygad"
+cva<- CVA(proD$coords, groups = subfam, plot= T, rounds= 1000)
+
+# plot the CVA
+
+
+mat <- matrix(c(4,5,0,1,1,2,1,1,3), 3)
+layout(mat, widths=c(1,1,1), heights=c(1,1,1))
+
+#plot the data
+par(mar=c(4, 4, 1, 1))
+plot(cva$CVscores, col=give_color(row.names(cva$CVscores)), pch=16,asp=T,
+     xlab=paste("1st canonical axis", paste(round(cva$Var[1,2],1),"%")),
+     ylab=paste("2nd canonical axis", paste(round(cva$Var[2,2],1),"%")),
+    las=1, cex=1)
+legend("bottomright", legend = levels(subfam), col = give_color(levels(subfam)), pch = 16)
+
+##  add hulls to plot (merge groups)
+for(jj in 1:length(levels(subfam))){
+  ii=levels(subfam)[jj]
+  kk=chull(cva$CVscores[subfam==ii,1:2])
+  lines(cva$CVscores[subfam==ii,1][c(kk, kk[1])],
+        cva$CVscores[subfam==ii,2][c(kk, kk[1])], col=give_color(ii))
+
+}
+
+#lines that seperate the different types of wings
+segments(min(cva$CVscores[,1]), 0,  max(cva$CVscores[,1]),0, col="grey", lty="dashed")
+segments(0, min(cva$CVscores[,2]), 0,  max(cva$CVscores[,2]), col="grey", lty="dashed")
+
+#links for the warpgrid that defines how LM are interlinked
+array1 <- c(1,1,1,2,2,3,3,4,4,5,5,6,7,8,9,9,10,10,11,11,12,14,14,16,16,17,18,20)
+array2 <- c(2,5,8,3,5,4,7,12,20,8,6,7,12,9,19,10,11,17,15,12,13,15,20,17,21,18,19,21)
+warpgrid <- array(c(array1, array2), dim= c(28,2))
+
+
+
+par(mar = c(0,0,0,0))
+
+ref <- mshape(proD$coords)
+
+#plot the mean against the maxima of different shapes.
+plotRefToTarget(ref,PCA2$pc.shapes$PC1min, method = "points", links= warpgrid,gridPars = gridPar(pt.bg = "grey",pt.size=0.5, tar.pt.bg = "darkorange" ,tar.link.col = "darkorange", tar.pt.size = 0.5, link.lwd=2, tar.link.lwd = 2))
+plotRefToTarget(ref,PCA2$pc.shapes$PC1max, method = "points", links= warpgrid,gridPars = gridPar(pt.bg = "grey",pt.size=0.5, tar.pt.bg = "darkorange" ,tar.link.col = "darkorange", tar.pt.size = 0.5))
+plotRefToTarget(ref,PCA2$pc.shapes$PC2min, method = "points", links= warpgrid,gridPars = gridPar(pt.bg = "grey",pt.size=0.5, tar.pt.bg = "darkorange" ,tar.link.col = "darkorange", tar.pt.size = 0.5))
+plotRefToTarget(ref,PCA2$pc.shapes$PC2max, method = "points", links= warpgrid,gridPars = gridPar(pt.bg = "grey",pt.size=0.5, tar.pt.bg = "darkorange" ,tar.link.col = "darkorange", tar.pt.size = 0.5))
+
+```
+
 
 ## Clustering in new Taxonomy and Dendrogramm
 
@@ -146,7 +206,7 @@ Proc_dist = read.table("Proc_distances_ban_pim_oph_cte.txt", header=T)
 ```
 
 
-```{r Dendrogramm, results='hide', message = FALSE, fig.width= 22, fig.height= 10}
+```{r Dendrogramm, results='hide', message = FALSE, fig.width= 22, fig.height= 12}
 
 
 require("dendextend") ## needs a dendrogram
@@ -154,34 +214,46 @@ require("dendextend") ## needs a dendrogram
 
 # Create a vector of colors, darkgreen if am is 0, green if 1.
 
-par(mar=c(10,3,1,0), cex = 1, font= 3)
+par(mar=c(10,2,1,0), cex = 1, font= 2)
 
 library(pvclust)
+
 result <- pvclust(scale(Proc_dist), method.dist="cor", method.hclust="average", nboot=1000)
 
 dend <- as.dendrogram(result)
 Label <- dend%>%labels
-my_colors1 = matrix( NA, dim(Proc_dist))
-for(i in 1:length(row.names(Proc_dist))){
-my_colors1[i] <- switch(substr(Label[i],1,6), "crypti" = "cyan", "ateleu" = "yellow", "meansp" = "green", "phygad" = "darkblue", "ichneu" = "red")
-}
+my_colors1 = give_color(Label)
+# Label2 <- result$hclust$labels
+# for(i in 1:length(Label2)){Label2[i] <- substr(as.character(Label2[i]),8,13)}
+# 
+# result$hclust$labels <-  Label2
 
-# with a dendrogram of pvrect
+# pdf("Cluster Analysis2.pdf", width = 20, height = 12)
+# par(mar=c(10,2,1,0), cex = 1, font= 2)
+# plot(result, print.pv = "au", print.num = FALSE, cex = 1.2, cex.pv = 1, font = 3, font.pv = 2)
+# pvrect(result, alpha = 0.95, pv = "au")
+# legend("topleft", legend=levels(subfam), col= give_color(levels(subfam)), pch=15, cex = 2)
+# colored_bars(dend, col = my_colors1, rowLabels = "subfam", sort_by_labels_order = FALSE)
+
+# #pdf("Cluster Analysis.pdf", width = 18, height = 22)
+# # # with a dendrogram of pvrect
 result %>% as.dendrogram %>%
   set("labels_color", value = my_colors1)%>%
   set("branches_k_color", value = c("skyblue", "darkorange", "grey","darkorange4","deepskyblue4",
                                     "darkolivegreen3","darkorchid1"),k =7) %>%
+  # set("labels", Label2[result$hclust$order]) %>%
   set("labels_cex", 0.8)  %>%
-  set("leaves_pch", 19)  %>% 
+  set("leaves_pch", 19)  %>%
   set("nodes_cex", 0.4) %>%
-  
+
    plot(main = "Cluster dendrogram with AU/BP values (%)\n reproduced plot with dendrogram", axes = FALSE)
 
-result %>% text
+result %>% text(print.num = FALSE, print.pv = "au")
 result %>% pvrect(alpha=0.95)
 
 
-legend("topleft", legend=levels(subfam), col= c("yellow", "cyan", "red", "green", "darkblue"), pch=15, cex = 2)
+legend("topleft", legend=levels(subfam), col= give_color(levels(subfam)), pch=15, cex = 2)
+colored_bars(dend=as.dendrogram(result), col = my_colors1, rowLabels = "subfam", sort_by_labels_order = FALSE)
 
 
 ```
