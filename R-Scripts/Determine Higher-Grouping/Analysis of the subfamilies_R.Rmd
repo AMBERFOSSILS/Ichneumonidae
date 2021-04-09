@@ -164,6 +164,27 @@ for(jj in 1:length(levels(subfam1))){
 
 ```
 
+```{r 3D, webgl = TRUE}
+
+colors = c("red","cyan","magenta","yellow", "green")[subfam1]
+
+plot3d(cva$CVscores[,1:3], col = colors, size = 9, 
+      xlab=paste("1st canonical axis", paste(round(cva$Var[1,2],1),"%")),
+     ylab=paste("2nd canonical axis", paste(round(cva$Var[2,2],1),"%")),
+      zlab=paste("3rd canonical axis", paste(round(cva$Var[3,2],1),"%")),)
+legend3d("topright", legend = c("Banchinae","Fossil" ,"Ophioninae", "Phygadeuontinae", "Pimplinae"), col = c("red","cyan","magenta","yellow") , pch= 16)
+
+
+```
+
+``` {r 3D1 , webgl = TRUE}
+plot3d(cva$CVscores[,c(1,2,4)], col = colors, size = 9,
+       xlab=paste("1st canonical axis", paste(round(cva$Var[1,2],1),"%")),
+     ylab=paste("2nd canonical axis", paste(round(cva$Var[2,2],1),"%")),
+      zlab=paste("4th canonical axis", paste(round(cva$Var[4,2],1),"%")),)
+legend3d("topright", legend = c("Banchinae","Fossil" ,"Ophioninae", "Phygadeuontinae", "Pimplinae"), col = c("red","cyan","magenta","yellow") , pch= 16)
+```
+
 ```{r Procrustes Distances, message = FALSE, results='hide', include=FALSE}
 library(Evomorph)
 

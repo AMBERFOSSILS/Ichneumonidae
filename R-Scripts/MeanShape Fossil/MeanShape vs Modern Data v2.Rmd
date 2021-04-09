@@ -12,7 +12,6 @@ library(knitr)
 require(Morpho)
 require(DescTools)
 options(rgl.useNULL = TRUE) # Suppress the separate window.
-knitr::knit_hooks$set(webgl = hook_webgl)
 library(geomorph)
 give_color <- function(subfamily) {
  if(!is.vector(subfamily)){
@@ -72,10 +71,12 @@ landmarkphygad = readland.tps("DATASET_PHYGAD.TPS",specID = "ID", readcurves = T
 landmarkphygad1 = readland.tps("PHYGAD2.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
 # landmarkphygad2 = readland.tps("PHYGAD3.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
 landmark <- Abind(landmark,meanfossil,landmarkIchneu, landmarkphygad, landmarkphygad1)
+landmark <- landmark[,,-(126)]
 
 species = as.factor( substr( dimnames(landmark)[[3]], 1, 6))
 subfam = as.factor( substr( dimnames(landmark)[[3]], 8, 13))
 areolet = as.factor( substr( dimnames(landmark)[[3]], 15, 15))
+tribe = as.factor( substr( dimnames(landmark)[[3]], 17, 19))
 
 
 ##      define Semilandmarks, first LM is the start, last one the end (those are both
@@ -223,17 +224,17 @@ result <- pvclust(scale(Proc_dist), method.dist="cor", method.hclust="average", 
 dend <- as.dendrogram(result)
 Label <- dend%>%labels
 my_colors1 = give_color(Label)
-# Label2 <- result$hclust$labels
-# for(i in 1:length(Label2)){Label2[i] <- substr(as.character(Label2[i]),8,13)}
-# 
-# result$hclust$labels <-  Label2
+Label2 <- result$hclust$labels
+for(i in 1:length(Label2)){Label2[i] <- substr(as.character(Label2[i]),8,13)}
 
-# pdf("Cluster Analysis2.pdf", width = 20, height = 12)
-# par(mar=c(10,2,1,0), cex = 1, font= 2)
-# plot(result, print.pv = "au", print.num = FALSE, cex = 1.2, cex.pv = 1, font = 3, font.pv = 2)
-# pvrect(result, alpha = 0.95, pv = "au")
-# legend("topleft", legend=levels(subfam), col= give_color(levels(subfam)), pch=15, cex = 2)
-# colored_bars(dend, col = my_colors1, rowLabels = "subfam", sort_by_labels_order = FALSE)
+result$hclust$labels <-  Label2
+
+pdf("Cluster Analysis3.pdf", width = 20, height = 12)
+par(mar=c(10,2,1,0), cex = 1, font= 2)
+plot(result, print.pv = "au", print.num = FALSE, cex = 1.2, cex.pv = 1, font = 3, font.pv = 2)
+pvrect(result, alpha = 0.95, pv = "au")
+legend("topleft", legend=levels(subfam), col= give_color(levels(subfam)), pch=15, cex = 2)
+colored_bars(dend, col = my_colors1, rowLabels = "subfam", sort_by_labels_order = FALSE)
 
 # #pdf("Cluster Analysis.pdf", width = 18, height = 22)
 # # # with a dendrogram of pvrect
