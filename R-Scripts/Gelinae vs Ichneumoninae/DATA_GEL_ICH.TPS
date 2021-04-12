@@ -30,7 +30,11 @@ POINTS=8
 290.00000 427.00000
 292.00000 425.00000
 294.00000 423.00000
+<<<<<<< HEAD
+ID=acotar_crypti_g_cryapt.JPG
+=======
 ID=acotar_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=0 
 LM=21
 186.00000 307.00000
@@ -64,7 +68,11 @@ POINTS=8
 331.00000 498.00000
 334.00000 495.00000
 337.00000 493.00000
+<<<<<<< HEAD
+ID=crapet_crypti_g_cryapt.JPG
+=======
 ID=crapet_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=1 
 LM=21
 152.00000 261.00000
@@ -98,7 +106,11 @@ POINTS=8
 242.00000 441.00000
 244.00000 439.00000
 246.00000 438.00000
+<<<<<<< HEAD
+ID=cubdis_crypti_g_cryapt.JPG
+=======
 ID=cubdis_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=2 
 LM=21
 234.00000 307.00000
@@ -132,7 +144,11 @@ POINTS=8
 362.00000 493.00000
 364.00000 492.00000
 368.00000 491.00000
+<<<<<<< HEAD
+ID=demcor_crypti_g_cryapt.JPG
+=======
 ID=demcor_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=3 
 LM=21
 149.00000 219.00000
@@ -166,7 +182,11 @@ POINTS=8
 310.00000 340.00000
 312.00000 337.00000
 314.00000 333.00000
+<<<<<<< HEAD
+ID=echrel_crypti_g_crycry.JPG
+=======
 ID=echrel_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=4 
 LM=21
 171.00000 264.00000
@@ -200,7 +220,11 @@ POINTS=8
 297.00000 461.00000
 301.00000 458.00000
 304.00000 456.00000
+<<<<<<< HEAD
+ID=javsp._crypti_g_cryapt.JPG
+=======
 ID=javsp._gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=5 
 LM=21
 188.00000 345.00000
@@ -234,7 +258,11 @@ POINTS=8
 346.00000 523.00000
 348.00000 520.00000
 351.00000 516.00000
+<<<<<<< HEAD
+ID=litnoh_crypti_g_cryapt.JPG
+=======
 ID=litnoh_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=6 
 LM=21
 180.00000 292.00000
@@ -268,7 +296,11 @@ POINTS=8
 365.00000 498.00000
 369.00000 493.00000
 373.00000 489.00000
+<<<<<<< HEAD
+ID=manbak_crypti_g_cryapt.JPG
+=======
 ID=manbak_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=7 
 LM=21
 274.00000 357.00000
@@ -302,7 +334,11 @@ POINTS=8
 409.00000 507.00000
 412.00000 504.00000
 416.00000 501.00000
+<<<<<<< HEAD
+ID=notinc_crypti_g_cryapt.JPG
+=======
 ID=notinc_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=8 
 LM=21
 198.00000 290.00000
@@ -336,7 +372,11 @@ POINTS=8
 442.00000 479.00000
 446.00000 476.00000
 450.00000 472.00000
+<<<<<<< HEAD
+ID=oretsu_crypti_g_cryapt.JPG
+=======
 ID=oretsu_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=9 
 LM=21
 127.00000 287.00000
@@ -370,7 +410,11 @@ POINTS=8
 278.00000 456.00000
 280.00000 454.00000
 283.00000 451.00000
+<<<<<<< HEAD
+ID=parple_crypti_g_cryapt.JPG
+=======
 ID=parple_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=10 
 LM=21
 236.00000 339.00000
@@ -404,7 +448,11 @@ POINTS=8
 414.00000 519.00000
 418.00000 516.00000
 421.00000 512.00000
+<<<<<<< HEAD
+ID=plasp._crypti_g_cryapt.JPG
+=======
 ID=plasp._gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=11 
 LM=21
 191.00000 300.00000
@@ -438,7 +486,11 @@ POINTS=8
 360.00000 477.00000
 363.00000 475.00000
 366.00000 471.00000
+<<<<<<< HEAD
+ID=pledig_crypti_g_cryapt.JPG
+=======
 ID=pledig_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=12 
 LM=21
 199.00000 303.00000
@@ -472,7 +524,11 @@ POINTS=8
 377.00000 495.00000
 381.00000 490.00000
 387.00000 485.00000
+<<<<<<< HEAD
+ID=polpal_crypti_g_cryapt.JPG
+=======
 ID=polpal_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=13 
 LM=21
 148.00000 352.00000
@@ -506,7 +562,11 @@ POINTS=8
 285.00000 544.00000
 289.00000 539.00000
 294.00000 534.00000
+<<<<<<< HEAD
+ID=stopic_crypti_g_cryapt.JPG
+=======
 ID=stopic_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=14 
 LM=21
 329.00000 274.00000
@@ -710,7 +770,11 @@ POINTS=8
 379.00000 479.00000
 386.00000 478.00000
 392.00000 475.00000
+<<<<<<< HEAD
+ID=gracil_phygad_o_phyphy.JPG
+=======
 ID=gracil_gelina_o_gelend.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=20 
 LM=21
 209.00000 262.00000
@@ -812,7 +876,11 @@ POINTS=8
 314.00000 433.00000
 317.00000 432.00000
 321.00000 429.00000
+<<<<<<< HEAD
+ID=oeccus_phygad_g_phyphy.JPG
+=======
 ID=oeccus_gelina_g_gelphy.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=23 
 LM=21
 193.00000 242.00000
@@ -846,7 +914,11 @@ POINTS=8
 319.00000 428.00000
 323.00000 427.00000
 327.00000 425.00000
+<<<<<<< HEAD
+ID=plehun_phygad_o_phyphy.JPG
+=======
 ID=plehun_gelina_o_gelhem.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=24 
 LM=21
 183.00000 252.00000
@@ -914,7 +986,11 @@ POINTS=8
 358.00000 574.00000
 361.00000 570.00000
 366.00000 565.00000
+<<<<<<< HEAD
+ID=rhequa_crypti_g_aptapt.JPG
+=======
 ID=rhequa_gelina_g_gelelh.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=26 
 LM=21
 212.00000 251.00000
@@ -948,7 +1024,11 @@ POINTS=8
 298.00000 477.00000
 301.00000 476.00000
 304.00000 475.00000
+<<<<<<< HEAD
+ID=stigag_phygad_g_phyphy.JPG
+=======
 ID=stigag_gelina_g_gelsti.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=27 
 LM=21
 191.00000 258.00000
@@ -1084,7 +1164,11 @@ POINTS=8
 406.00000 395.00000
 407.00000 391.00000
 408.00000 386.00000
+<<<<<<< HEAD
+ID=apshir_crypti_g_crycry.JPG
+=======
 ID=apshir_gelina_g_mesagr.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=31 
 LM=21
 186.00000 304.00000
@@ -1152,7 +1236,11 @@ POINTS=8
 319.00000 471.00000
 324.00000 470.00000
 328.00000 469.00000
+<<<<<<< HEAD
+ID=atetsi_ateleu_g_ateate.JPG
+=======
 ID=atetsi_gelina_g_mesate.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=33 
 LM=21
 209.00000 235.00000
@@ -1492,7 +1580,11 @@ POINTS=8
 314.00000 485.00000
 317.00000 482.00000
 320.00000 479.00000
+<<<<<<< HEAD
+ID=picmel_crypti_g_crycry.JPG
+=======
 ID=picmel_gelina_g_mesnem.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=43 
 LM=21
 209.00000 238.00000
@@ -1663,7 +1755,11 @@ POINTS=8
 351.00000 499.00000
 353.00000 498.00000
 357.00000 494.00000
+<<<<<<< HEAD
+ID=aptfla_crypti_g_cryapt.JPG
+=======
 ID=aptfla_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=49
 LM=21
 167.00000 286.00000
@@ -1697,7 +1793,11 @@ POINTS=8
 353.00000 393.00000
 356.00000 389.00000
 358.00000 385.00000
+<<<<<<< HEAD
+ID=agrsp._crypti_g_crycry.JPG
+=======
 ID=agrsp._gelina_g_mesagr.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=50
 LM=21
 178.00000 291.00000
@@ -1731,7 +1831,11 @@ POINTS=8
 341.00000 450.00000
 342.00000 446.00000
 344.00000 442.00000
+<<<<<<< HEAD
+ID=arifug_crypti_g_crycry.JPG
+=======
 ID=arifug_gelina_g_mesagr.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=51
 LM=21
 189.00000 270.00000
@@ -2037,7 +2141,11 @@ POINTS=8
 345.00000 343.00000
 345.00000 339.00000
 345.00000 335.00000
+<<<<<<< HEAD
+ID=gaminc_crypti_g_crycry.JPG
+=======
 ID=gaminc_gelina_g_mesagr.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=60
 LM=21
 185.00000 274.00000
@@ -2071,7 +2179,11 @@ POINTS=8
 388.00000 390.00000
 389.00000 386.00000
 391.00000 382.00000
+<<<<<<< HEAD
+ID=hidnig_crypti_g_crycry.JPG
+=======
 ID=hidnig_gelina_g_mesagr.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=61
 LM=21
 190.00000 274.00000
@@ -2105,7 +2217,11 @@ POINTS=8
 335.00000 396.00000
 336.00000 393.00000
 338.00000 389.00000
+<<<<<<< HEAD
+ID=idiana_crypti_g_crycry.JPG
+=======
 ID=idiana_gelina_g_mesagr.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=62
 LM=21
 131.00000 302.00000
@@ -2377,7 +2493,11 @@ POINTS=8
 334.00000 586.00000
 338.00000 582.00000
 340.00000 580.00000
+<<<<<<< HEAD
+ID=colruf_crypti_g_cryapt.JPG
+=======
 ID=colruf_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=70 
 LM=21
 191.00000 356.00000
@@ -2411,7 +2531,11 @@ POINTS=8
 388.00000 559.00000
 391.00000 553.00000
 394.00000 549.00000
+<<<<<<< HEAD
+ID=girgyr_crypti_g_cryapt.JPG
+=======
 ID=girgyr_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=71 
 LM=21
 336.00000 341.00000
@@ -2445,7 +2569,11 @@ POINTS=8
 449.00000 560.00000
 451.00000 557.00000
 457.00000 550.00000
+<<<<<<< HEAD
+ID=hemfas_crypti_o_cryapt.JPG
+=======
 ID=hemfas_gelina_o_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=72 
 LM=21
 234.00000 373.00000
@@ -2479,7 +2607,11 @@ POINTS=8
 421.00000 585.00000
 422.00000 582.00000
 425.00000 578.00000
+<<<<<<< HEAD
+ID=lisspa_crypti_g_cryapt.JPG
+=======
 ID=lisspa_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=73 
 LM=21
 207.00000 364.00000
@@ -2513,7 +2645,11 @@ POINTS=8
 468.00000 571.00000
 471.00000 567.00000
 474.00000 561.00000
+<<<<<<< HEAD
+ID=megmon_crypti_g_cryapt.JPG
+=======
 ID=megmon_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=74 
 LM=21
 219.00000 286.00000
@@ -2547,7 +2683,11 @@ POINTS=8
 335.00000 522.00000
 339.00000 519.00000
 342.00000 517.00000
+<<<<<<< HEAD
+ID=oxybar_crypti_g_cryapt.JPG
+=======
 ID=oxybar_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=75 
 LM=21
 233.00000 296.00000
@@ -2581,7 +2721,11 @@ POINTS=8
 350.00000 520.00000
 356.00000 518.00000
 361.00000 516.00000
+<<<<<<< HEAD
+ID=plebas_crypti_g_cryapt.JPG
+=======
 ID=plebas_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=76 
 LM=21
 196.00000 331.00000
@@ -2615,7 +2759,11 @@ POINTS=8
 333.00000 556.00000
 338.00000 552.00000
 343.00000 549.00000
+<<<<<<< HEAD
+ID=rhypen_crypti_g_cryapt.JPG
+=======
 ID=rhypen_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=77 
 LM=21
 220.00000 328.00000
@@ -2649,7 +2797,11 @@ POINTS=8
 430.00000 499.00000
 432.00000 493.00000
 432.00000 490.00000
+<<<<<<< HEAD
+ID=schgra_crypti_g_cryapt.JPG
+=======
 ID=schgra_gelina_g_echech.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=78
 LM=21
 239.00000 250.00000
@@ -2683,7 +2835,11 @@ POINTS=8
 398.00000 468.00000
 404.00000 466.00000
 409.00000 462.00000
+<<<<<<< HEAD
+ID=uchmar_phygad_g_phyphy.JPG
+=======
 ID=uchmar_gelina_g_gelphy.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=79
 LM=21
 186.00000 225.00000
@@ -2785,7 +2941,11 @@ POINTS=8
 338.00000 421.00000
 343.00000 419.00000
 348.00000 418.00000
+<<<<<<< HEAD
+ID=chithy_phygad_o_phyphy.JPG
+=======
 ID=chithy_gelina_o_gelchi.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=82
 LM=21
 207.00000 207.00000
@@ -2853,7 +3013,11 @@ POINTS=8
 371.00000 433.00000
 375.00000 431.00000
 378.00000 428.00000
+<<<<<<< HEAD
+ID=endsub_phygad_g_phygad.JPG
+=======
 ID=endsub_gelina_g_gelend.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=84
 LM=21
 246.00000 248.00000
@@ -2887,7 +3051,11 @@ POINTS=8
 376.00000 433.00000
 381.00000 432.00000
 386.00000 430.00000
+<<<<<<< HEAD
+ID=eudsp._phygad_o_phyphy.JPG
+=======
 ID=eudsp._gelina_o_gelacr.JPG
+>>>>>>> parent of e90e53e (ordered structure in data)
 ID1=85
 LM=21
 270.00000 193.00000
@@ -2955,6 +3123,11 @@ POINTS=8
 277.00000 461.00000
 282.00000 460.00000
 285.00000 457.00000
+<<<<<<< HEAD
+ID=gnoten_phygad_g_phyphy.JPG
+ID1=87
+LM=21
+=======
 ID=gnoten_gelina_g_gelphy.JPG
 ID1=87
 LM=21
@@ -2992,6 +3165,7 @@ POINTS=8
 ID=hembip_gelina_g_gelhem.JPG
 ID1=88
 LM=21
+>>>>>>> parent of e90e53e (ordered structure in data)
 197.00000 230.00000
 238.00000 403.00000
 252.00000 467.00000
@@ -3229,6 +3403,10 @@ POINTS=8
 357.00000 417.00000
 ID=teldec_gelina_g_gelmas.JPG
 ID1=95
+<<<<<<< HEAD
+<<<<<<< HEAD:R-Scripts/Gelinae vs Ichneumoninae/DATA_GEL_ICH.TPS
+=======
+>>>>>>> parent of e90e53e (ordered structure in data)
 LM=21
 243.00000 383.00000
 434.00000 504.00000
@@ -3772,4 +3950,10 @@ POINTS=8
 456.00000 476.00000
 457.00000 475.00000
 ID=psepra_ichneu_g_aloalo.JPG
+<<<<<<< HEAD
 ID1=111
+=======
+>>>>>>> parent of e90e53e (ordered structure in data):R-Scripts/Landmarks Phygadeuontinae_O/DATA_MODERN_TAX.TPS
+=======
+ID1=111
+>>>>>>> parent of e90e53e (ordered structure in data)
