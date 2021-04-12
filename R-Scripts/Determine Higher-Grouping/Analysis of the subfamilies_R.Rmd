@@ -31,7 +31,6 @@ give_color <- function(subfamily) {
 }
 ```
 
-
 ## Preparing Data
 
 Path to Data: "~/GitHub/Ichneumonidae/R-Scripts/Determine Higher-Crouping"
@@ -41,14 +40,10 @@ Data contains 234 specimens from Ophioniformes/Ichneumoniformes/Pimpliformes. Ho
 !!! This is the first time these subfamilies have been compared with geometric morphometrics by forewing venation!!!
 
 After Data-Aquisation we superimpose the Data with the function gpagen().
-ö
+
 ```{r cars, include=FALSE, results= 'hide'}
-Fossil <- readland.tps("FOSSIL.TPS",specID = "ID", readcurves = T, warnmsg = TRUE)
-Phygadeuontinae <- readland.tps("DATA_MODERN_TAX.tps",specID = "ID", readcurves = T, warnmsg = TRUE)
-Banchinae <- readland.tps("banchinae.tps",specID = "ID", readcurves = T, warnmsg = TRUE)
-Ophioninae <- readland.tps("ophioninae.tps",specID = "ID", readcurves = T, warnmsg = TRUE)
-Pimplinae <- readland.tps("pimplinae.tps",specID = "ID", readcurves = T, warnmsg = TRUE)
-landmark = Abind(Phygadeuontinae, Banchinae, Ophioninae, Pimplinae, Fossil)
+
+landmark = readland.tps("blockcourse_highersub.tps",specID = "ID", readcurves = T, warnmsg = TRUE)
 
 ##      define classifiers (subfam or tribes)
 species = as.factor( substr( dimnames(landmark)[[3]], 1, 6))
@@ -181,7 +176,6 @@ legend3d("topright", legend = c("Banchinae","Fossil" ,"Ophioninae", "Phygadeuont
 
 
 ```
-
 
 ``` {r 3D1 , webgl = TRUE}
 plot3d(cva$CVscores[,c(1,2,4)], col = colors, size = 9,
