@@ -1,0 +1,20 @@
+ Datentr„ger in Laufwerk C: ist Windows
+ Volumeseriennummer: 28F1-3508
+
+ Verzeichnis von C:\Users\olivi\OneDrive\Dokumente\Documents\Documents\Biologie Universit„t Basel\Bachelor\Blockkurse\Zoology and Evolutionary Biology\Project Darwin Wasp\Phygadeuontinae
+
+[.]                   diccra_phygad_o.JPG   ortsp3_phygad_g.JPG
+[..]                  enclae_phygad_o.JPG   physub_phygad_g.JPG
+aclfla_phygad_o.JPG   ethsyr_phygad_g.JPG   plamon_phygad_o.JPG
+acrnig_phygad_g.JPG   filename.txt          pollam_phygad_o.JPG
+agaswe_phygad_g.JPG   glypro_phygad_g.JPG   [Robin]
+ampsp1_phygad_o.JPG   gnydes_phygad_o.JPG   stibro_phygad_g.JPG
+atrbic_phygad_g.JPG   [Isadelphus]          sulsp2_phygad_o.JPG
+batcla_phygad_g.JPG   locpim_phygad_g.JPG   themic_phygad_g.JPG
+certae_phygad_g.JPG   lysman_phygad_o.JPG   tripim_phygad_g.JPG
+chapro_phygad_o.JPG   masaci_phygad_o.JPG   trofal_phygad_g.JPG
+chithy_phygad_o.JPG   medaff_phygad_g.JPG   xenbit_phygad_g.JPG
+cresp4_phygad_o.JPG   megluc_phygad_g.JPG   xipsp1_phygad_g.JPG
+dialav_phygad_o.JPG   meslae_phygad_g.JPG   
+              34 Datei(en),      1'847'013 Bytes
+               4 Verzeichnis(se), 195'493'978'112 Bytes frei
